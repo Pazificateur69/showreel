@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Génère en/index.html à partir de index.html (FR) et de la table de traduction ci-dessous.
+"""Construit le site : empreintes CSP de la page FR, puis en/index.html traduite (avec ses propres empreintes).
 
-La page française est la seule source : on la modifie, puis `python3 build_en.py`.
+La page française est la seule source : on la modifie, puis `python3 build.py`.
 Chaque texte doit être trouvé exactement le nombre de fois indiqué, sinon le script s'arrête
 (une phrase française modifiée sans sa traduction ne passe donc pas en silence).
 """
+import base64
+import hashlib
 import pathlib
 import re
 import sys
@@ -18,7 +20,34 @@ JSONLD_EN = ('{"@context":"https://schema.org","@type":"ProfilePage","url":"' + 
              '"email":"mailto:alessandro.gagliardi225145@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Villeurbanne",'
              '"addressRegion":"Auvergne-Rhône-Alpes","addressCountry":"FR"},"alumniOf":{"@type":"CollegeOrUniversity","name":"Guardia Cybersecurity School"},'
              '"knowsLanguage":["fr","en","it","ru"],"knowsAbout":["Penetration testing","DevSecOps","Linux hardening","Incident response",'
-             '"OWASP Top 10","MITRE ATT&CK","EBIOS Risk Manager","LLM security"],"sameAs":["https://github.com/Pazificateur69","https://pazificateur69.github.io/"]}}')
+             '"OWASP Top 10","MITRE ATT&CK","EBIOS Risk Manager","LLM security"],"sameAs":["https://github.com/Pazificateur69","https://www.linkedin.com/in/alessandro-cyber/","https://pazificateur69.github.io/"]}}')
+
+# Défi console : texte en clair par langue, chiffré en XOR avec la clé ci-dessous
+FLAG_KEY = 'exploitspec'
+FLAG_FR = 'FLAG{je_verifie_toujours} Bravo. Écris-moi avec ce flag en objet : alessandro.gagliardi225145@gmail.com'
+FLAG_EN = 'FLAG{i_always_verify} Well done. Email me with this flag as the subject: alessandro.gagliardi225145@gmail.com'
+
+
+def xor_hex(text, key=FLAG_KEY):
+    k = key.encode()
+    return bytes(b ^ k[i % len(k)] for i, b in enumerate(text.encode('utf-8'))).hex()
+
+
+def with_flag(html, text):
+    new, n = re.subn(r"const FLAG = '[0-9a-fA-F_A-Z]*';", "const FLAG = '" + xor_hex(text) + "';", html, count=1)
+    assert n == 1, 'constante FLAG introuvable'
+    return new
+
+
+def with_csp(html):
+    """Remplace la liste d'empreintes de script-src par celles des scripts en ligne exécutables de la page."""
+    hashes = []
+    for m in re.finditer(r'<script(?![^>]*\bsrc=)(?![^>]*application/ld\+json)[^>]*>(.*?)</script>', html, re.S):
+        hashes.append("'sha256-" + base64.b64encode(hashlib.sha256(m.group(1).encode('utf-8')).digest()).decode() + "'")
+    new, n = re.subn(r"(<meta http-equiv=\"Content-Security-Policy\" content=\"[^\"]*?script-src )(.*?)( https://cdnjs\.cloudflare\.com)",
+                     lambda m: m.group(1) + ' '.join(hashes) + m.group(3), html, count=1)
+    assert n == 1 and len(hashes) == 2, f'CSP : {n} balise(s), {len(hashes)} script(s) en ligne'
+    return new
 
 # (texte français, texte anglais, nombre d'occurrences attendu)
 T = [
@@ -40,6 +69,11 @@ T = [
     ('<a class="hud-link" href="en/" hreflang="en" lang="en" aria-label="English version">EN</a>',
      '<a class="hud-link" href="../" hreflang="fr" lang="fr" aria-label="Version française">FR</a>', 1),
     ('href="cv-alessandro-gagliardi-fr.pdf"', 'href="../cv-alessandro-gagliardi-en.pdf"', 2),
+    ('<a class="hud-link hud-quick" href="?rapide"><span class="l-long">Version rapide</span><span class="l-short">Rapide</span></a>',
+     '<a class="hud-link hud-quick" href="?quick"><span class="l-long">Quick version</span><span class="l-short">Quick</span></a>', 1),
+    ('<a class="hud-link hud-anim" href="./">Version animée</a>', '<a class="hud-link hud-anim" href="./">Animated version</a>', 1),
+    ('<!-- Tu lis le code source ? Bon réflexe. La suite du défi est dans la console du navigateur (F12). -->',
+     '<!-- Reading the source? Good instinct. The rest of the challenge is in the browser console (F12). -->', 1),
     ('aria-label="Lecture automatique"', 'aria-label="Autoplay"', 1),
     ('<span class="hud-play-l">Lire</span>', '<span class="hud-play-l">Play</span>', 1),
     ('aria-label="Scènes du showreel"', 'aria-label="Showreel scenes"', 1),
@@ -85,8 +119,8 @@ T = [
      'After auditing and hardening the same server: 20 risks prioritised, 6 of them critical, and 9 kernel CVEs patched live.', 1),
     ('<span class="sr-only">90,1&nbsp;%</span><span class="odo" aria-hidden="true">90,1</span>', '<span class="sr-only">90.1%</span><span class="odo" aria-hidden="true">90.1</span>', 1),
     ('<p class="beat-unit">benchmark XBEN</p>', '<p class="beat-unit">XBEN benchmark</p>', 1),
-    ('Taux de réussite de T3MP3ST, framework offensif piloté par IA auquel j’ai contribué.',
-     'Success rate of T3MP3ST, an AI-driven offensive framework I contributed to.', 1),
+    ('Taux de réussite de T3MP3ST, framework offensif piloté par IA auquel j’ai contribué avec 5 pull requests fusionnées.',
+     'Success rate of T3MP3ST, an AI-driven offensive framework I contributed 5 merged pull requests to.', 1),
     ('<span class="sr-only">31&#8239;400</span><span class="odo" aria-hidden="true">31&#8239;400</span>', '<span class="sr-only">31,400</span><span class="odo" aria-hidden="true">31,400</span>', 1),
     ('<p class="beat-unit">lignes de Rust</p>', '<p class="beat-unit">lines of Rust</p>', 1),
     ('CURS3D, blockchain de couche 1 post-quantique&nbsp;: signatures CRYSTALS-Dilithium, consensus BFT à preuve d’enjeu, machine virtuelle WASM.',
@@ -151,8 +185,21 @@ T = [
      '<h3>Incident response</h3><p>File inclusion attempt on /.env contained, Nginx anti-dotfile rule across 15 domains, outbound TLS enabled. Controls re-verified two months later.</p>', 1),
     # ---- Projets ----
     ('<h2 class="big-title">Projets</h2>', '<h2 class="big-title">Projects</h2>', 1),
-    ('Huit productions, du framework de pentest à la blockchain post-quantique. Chaque ligne s’ouvre sur son détail et un aperçu animé.',
-     'Eight productions, from a pentest framework to a post-quantum blockchain. Each row opens on its details and an animated preview.', 1),
+    ('Neuf productions, du framework de pentest à la blockchain post-quantique. Chaque ligne s’ouvre sur son détail et un aperçu animé.',
+     'Nine productions, from a pentest framework to a post-quantum blockchain. Each row opens on its details and an animated preview.', 1),
+    ('<span class="proj-desc">Une faille prouvée devient un test de CI</span>', '<span class="proj-desc">A proven exploit becomes a CI test</span>', 1),
+    ('<span class="proj-metric mono">Liste OWASP</span>', '<span class="proj-metric mono">OWASP list</span>', 1),
+    ('L’outil que j’ai créé&nbsp;: une faille HTTP prouvée devient un test lisible, rangé à côté du code et rejoué en CI. Il échoue sur la version vulnérable, passe après le correctif et reste stable, pour que la faille ne revienne pas.',
+     'The tool I created: a proven HTTP exploit becomes a readable test, stored next to the code and replayed in CI. It fails on the vulnerable version, passes after the fix and stays stable, so the vulnerability does not come back.', 1),
+    ('Référencé dans la liste communautaire des outils de sécurité API de l’OWASP et publié sur la GitHub Marketplace. Open source, sous licence Apache-2.0.',
+     'Listed in the OWASP community list of API security tools and published on the GitHub Marketplace. Open source, Apache-2.0 licence.', 1),
+    ('>Site du projet <svg', '>Project site <svg', 2),
+    ('Contribution à un outil open source de plus de 6&#8239;000 étoiles, où des agents autonomes enchaînent reconnaissance, exploitation et rapport, selon une kill chain mappée MITRE ATT&amp;CK. 90,1&nbsp;% de réussite sur le benchmark XBEN.',
+     'Contribution to an open-source tool with over 6,000 stars, where autonomous agents chain reconnaissance, exploitation and reporting along a kill chain mapped to MITRE ATT&amp;CK. 90.1% success rate on the XBEN benchmark.', 1),
+    ('Mes 5 pull requests fusionnées&nbsp;: vrais appels d’outils (scanners de code, rétro-ingénierie, mobile, smart contracts), sorties de scanners converties en résultats vérifiables, et un contrôle qui rejette toute réussite non prouvée.',
+     'My 5 merged pull requests: real tool invocations (code scanners, reverse engineering, mobile, smart contracts), scanner output turned into verifiable findings, and a gate that rejects any unproven success.', 1),
+    ('>Mes 5 PR fusionnées <svg', '>My 5 merged PRs <svg', 1),
+    ('>Dépôt T3MP3ST <svg', '>T3MP3ST repository <svg', 1),
     ('<span class="proj-kind mono">Offensif</span>', '<span class="proj-kind mono">Offensive</span>', 1),
     ('<span class="proj-desc">Framework de pentest open source</span>', '<span class="proj-desc">Open-source pentest framework</span>', 1),
     ('Reconnaissance, tests web et réseau, Active Directory et reporting réunis dans une seule chaîne. 72 modules, validé sur DVWA, Juice Shop et WebGoat.',
@@ -161,8 +208,6 @@ T = [
     ('<span class="proj-kind mono">IA offensive</span>', '<span class="proj-kind mono">Offensive AI</span>', 1),
     ('<span class="proj-desc">Framework offensif piloté par IA</span>', '<span class="proj-desc">AI-driven offensive framework</span>', 1),
     ('<span class="proj-metric mono">90,1&nbsp;% XBEN</span>', '<span class="proj-metric mono">90.1% XBEN</span>', 1),
-    ('Contribution à un outil où des agents autonomes enchaînent reconnaissance, exploitation et rapport, selon une kill chain mappée MITRE ATT&amp;CK. 90,1&nbsp;% de réussite sur le benchmark XBEN.',
-     'Contribution to a tool where autonomous agents chain reconnaissance, exploitation and reporting along a kill chain mapped to MITRE ATT&amp;CK. 90.1% success rate on the XBEN benchmark.', 1),
     ('Agents IA / MITRE ATT&amp;CK / Red team', 'AI agents / MITRE ATT&amp;CK / Red team', 1),
     ('<span class="proj-kind mono">Infra Zero Trust</span>', '<span class="proj-kind mono">Zero Trust infra</span>', 1),
     ('<span class="proj-desc">Système d’information Zero Trust</span>', '<span class="proj-desc">Zero Trust information system</span>', 1),
@@ -219,6 +264,8 @@ T = [
      '<dt>Filmed in</dt><dd>Villeurbanne and Lyon, open to relocation within France and remote work</dd>', 1),
     ('<dd>Permis B, véhiculé</dd>', '<dd>Full driving licence, own vehicle</dd>', 1),
     ('<dt>Avec la participation de</dt>', '<dt>Featuring</dt>', 1), ('<dt>Plateformes</dt>', '<dt>Platforms</dt>', 1),
+    ('<dt>Sécurité du site</dt><dd>Aucun cookie ni outil de mesure d’audience, scripts vérifiés par empreinte (SRI), politique de sécurité du contenu (CSP) stricte, security.txt publié</dd>',
+     '<dt>Site security</dt><dd>No cookies or audience analytics, integrity-checked scripts (SRI), strict Content Security Policy, published security.txt</dd>', 1),
     ('Aucun serveur de production n’a été maltraité pendant le tournage.', 'No production servers were harmed in the making of this film.', 1),
     ('Tournons la <em>suite</em> ensemble.', 'Let’s shoot the <em>sequel</em> together.', 1),
     ('<span>Copier l’adresse</span>', '<span>Copy address</span>', 1),
@@ -246,11 +293,22 @@ T = [
     ("'CLÉ DÉTRUITE'", "'KEY DESTROYED'", 1),
     ("'CHIFFREMENT CÔTÉ NAVIGATEUR'", "'IN-BROWSER ENCRYPTION'", 1),
     ("'26 MODULES  PoC D’EXPLOITS HISTORIQUES'", "'26 MODULES  HISTORICAL EXPLOIT PoCs'", 1),
+    ("'PREUVE > TEST > CI'", "'PROOF > TEST > CI'", 1),
+    ('window.dechiffrer = key', 'window.decrypt = key', 1),
+    ("return 'Donne une clé.';", "return 'Give me a key.';", 1),
+    ("'Mauvaise clé. Relis la liste des projets.'", "'Wrong key. Read the project list again.'", 1),
+    ("'%cTu lis la console ? Bon réflexe.'", "'%cReading the console? Good instinct.'", 1),
+    ("'Un flag est chiffré en XOR juste ici :\\n'", "'A flag is XOR-encrypted right here:\\n'", 1),
+    ("'\\nIndice : la clé est le nom de l’outil qui transforme une faille prouvée en test.\\nEssaie : dechiffrer(\"la-clé\")'",
+     "'\\nHint: the key is the name of the tool that turns a proven exploit into a test.\\nTry: decrypt(\"the-key\")'", 1),
 ]
 
 
 def main():
-    s = (ROOT / 'index.html').read_text(encoding='utf-8')
+    fr_path = ROOT / 'index.html'
+    fr = with_csp(with_flag(fr_path.read_text(encoding='utf-8'), FLAG_FR))
+    fr_path.write_text(fr, encoding='utf-8')
+    s = with_flag(fr, FLAG_EN)
     s, n = re.subn(r'(<script type="application/ld\+json">\n).*?(\n</script>)', lambda m: m.group(1) + JSONLD_EN + m.group(2), s, count=1, flags=re.S)
     errors = [] if n == 1 else ['bloc JSON-LD introuvable']
     for fr, en, count in T:
@@ -261,10 +319,11 @@ def main():
         s = s.replace(fr, en)
     if errors:
         sys.exit('Traduction incomplète :\n  ' + '\n  '.join(errors))
+    s = with_csp(s)
     out = ROOT / 'en' / 'index.html'
     out.parent.mkdir(exist_ok=True)
     out.write_text(s, encoding='utf-8')
-    print(f'{out.relative_to(ROOT)} écrit ({len(T)} traductions appliquées)')
+    print(f'index.html : empreintes CSP à jour\n{out.relative_to(ROOT)} écrit ({len(T)} traductions appliquées)')
 
 
 if __name__ == '__main__':

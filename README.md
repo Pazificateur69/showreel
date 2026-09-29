@@ -9,6 +9,7 @@ Ingénieur cybersécurité et DevSecOps à Lyon. Le site se regarde comme une ba
 
 - **Lecture** : faire défiler, ou appuyer sur « Lancer le showreel » (ou Espace) pour une lecture automatique.
 - **Accessibilité** : avec « réduire les animations » activé dans le système, la page s'affiche en version statique complète.
+- **Version rapide** : `?rapide` (ou `?quick` en anglais) affiche le CV en défilement simple, sans animation.
 - **Machines modestes** : si l'ordinateur n'arrive pas à suivre, le site passe tout seul en mode allégé (défilement natif, titres fixes). On peut le forcer avec `?lite`.
 
 ## Technique
@@ -18,7 +19,8 @@ Pages statiques, sans build côté site.
 - [GSAP](https://gsap.com) 3.13 + ScrollTrigger (séquences pilotées par le défilement), [Lenis](https://lenis.darkroom.engineering) (défilement fluide), chargés depuis cdnjs et jsDelivr avec contrôle d'intégrité (SRI).
 - Polices Google Fonts : Anybody (axe de largeur animé), Instrument Sans, Martian Mono.
 - Aperçus de projets dessinés en Canvas 2D, icônes Phosphor.
-- `index.html` (FR) est la seule source. La version anglaise `en/index.html` se régénère avec `python3 build_en.py` : le script s'arrête si un texte français n'a plus sa traduction.
+- `index.html` (FR) est la seule source. Après chaque modification, lancer `python3 build.py` : il recalcule les empreintes de la politique de sécurité (CSP) et régénère la version anglaise `en/index.html`, en s'arrêtant si un texte français n'a plus sa traduction.
+- Sécurité : CSP stricte en balise meta (scripts en ligne autorisés par empreinte SHA-256), scripts tiers vérifiés par SRI, aucun cookie ni outil de mesure d'audience. Un petit défi attend dans la console du navigateur.
 
 En local :
 
