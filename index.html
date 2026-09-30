@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-DpaQGSviRphdxwBAtjUbHNMQjUQb0XAJmbyY3Bo3iWQ=' 'sha256-QmPgkh0/KxYsjTpPRksJ9s0ERlUIdkLX4mipoGgcssM=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-DpaQGSviRphdxwBAtjUbHNMQjUQb0XAJmbyY3Bo3iWQ=' 'sha256-HGVFSAKE+3NW93+KzOG2eC3RgpSJ27ygTWbI8XKl2b8=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Alessandro Gagliardi · Ingénieur cybersécurité &amp; DevSecOps à Lyon</title>
 <meta name="description" content="Showreel interactif d’Alessandro Gagliardi, ingénieur cybersécurité et DevSecOps à Lyon : pentest, durcissement, réponse à incident, DevSecOps, projets et parcours.">
@@ -497,20 +497,13 @@
   .fin .btn { z-index: 1; }
 
   /* Ident, coupes, chiffres illustrés, vrais écrans, son */
-  .stats-viz, .cut, .hud-sound, .ident { display: none; }
+  .stats-viz, .hud-sound, .ident { display: none; }
   .intro .ident { display: grid; position: absolute; inset: 0; place-items: center; opacity: 0; pointer-events: none; }
   .ident-t { grid-area: 1 / 1; font-family: var(--f-display); font-weight: 900; font-size: min(34vmin, 260px); line-height: .8; letter-spacing: -.02em; font-variation-settings: "wdth" var(--w, 100); }
   .ident-r { color: var(--red); }
   .ident-b { color: var(--blue); }
   .ident-w { color: var(--paper); }
   .ident-key { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: calc(min(34vmin, 260px) * .5) 0 0 -7px; background: var(--red); rotate: 45deg; }
-  .motion .cut { display: block; position: fixed; inset: 0; z-index: 58; pointer-events: none; overflow: hidden; }
-  .cut i { position: absolute; top: 0; bottom: 0; left: 0; width: 2px; transform: translateX(-60px); will-change: transform; }
-  .cut i::before { content: ""; position: absolute; top: 0; bottom: 0; right: 2px; width: 16vw; }
-  .cut-r { background: var(--red); }
-  .cut-r::before { background: linear-gradient(90deg, rgba(240, 80, 58, 0), rgba(240, 80, 58, .1)); }
-  .cut-b { background: var(--blue-2); }
-  .cut-b::before { background: linear-gradient(90deg, rgba(143, 155, 255, 0), rgba(143, 155, 255, .08)); }
   .motion .hud-sound { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid currentColor; }
   .hud-sound .ico { width: 13px; height: 13px; }
   .hud-sound .i-on, .snd-on .hud-sound .i-off { display: none; }
@@ -609,7 +602,6 @@
 
 <div class="scrim scrim-t" aria-hidden="true"></div>
 <div class="scrim scrim-b" aria-hidden="true"></div>
-<div class="cut" aria-hidden="true"><i class="cut-r"></i><i class="cut-b"></i></div>
 
 <header class="hud hud-top">
   <a class="brand" href="#ouverture">A. Gagliardi</a>
@@ -1539,19 +1531,15 @@
   fitAll();
   ScrollTrigger.addEventListener('refreshInit', fitAll);
 
-  // Décalage rouge/bleu qui se resserre : red team et blue team qui se rejoignent
-  const SPLIT = '-0.07em 0px 0px rgba(240,80,58,0.85), 0.07em 0px 0px rgba(61,82,245,0.85)';
-  const NOSPLIT = '0em 0px 0px rgba(240,80,58,0), 0em 0px 0px rgba(61,82,245,0)';
-
   /* ---------- 01 Ouverture ---------- */
   const hero = $('#ouverture');
   function heroIn() {
     hn.classList.add('masking');
     return gsap.timeline()
-      .fromTo(chars, { yPercent: 118, '--w': 50, textShadow: SPLIT }, { yPercent: 0, '--w': num(getComputedStyle(d).getPropertyValue('--hn-w')) || 100, textShadow: NOSPLIT, duration: 1.25, ease: 'expo.out', stagger: 0.032 })
+      .fromTo(chars, { yPercent: 118, '--w': 50 }, { yPercent: 0, '--w': num(getComputedStyle(d).getPropertyValue('--hn-w')) || 100, duration: 1.25, ease: 'expo.out', stagger: 0.032 })
       .fromTo('.hero-sub, .hero-cta', { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'expo.out', stagger: 0.1 }, '-=0.95')
       .fromTo('.hud', { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' }, '<')
-      .add(() => { hn.classList.remove('masking'); gsap.set(chars, { clearProps: '--w,textShadow' }); });
+      .add(() => { hn.classList.remove('masking'); gsap.set(chars, { clearProps: '--w' }); });
   }
   ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false });
   gsap.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } })
@@ -1867,7 +1855,7 @@
   /* ---------- Titres : étirement à l’entrée, léger parallaxe ---------- */
   $$('.big-title, .career-title, .contact-title').forEach(t => {
     const w = t.classList.contains('contact-title') ? 76 : 78;
-    heavy.push(gsap.fromTo(t, { '--w': 50, opacity: 0, textShadow: SPLIT }, { '--w': w, opacity: 1, textShadow: NOSPLIT, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: t, start: 'top 88%', toggleActions: 'play none none reverse' } }));
+    heavy.push(gsap.fromTo(t, { '--w': 50, opacity: 0 }, { '--w': w, opacity: 1, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: t, start: 'top 88%', toggleActions: 'play none none reverse' } }));
   });
   $$('.big-title').forEach(t => gsap.fromTo(t, { yPercent: 18 }, { yPercent: -18, ease: 'none', scrollTrigger: { trigger: t, start: 'top bottom', end: 'bottom top', scrub: true } }));
 
@@ -1994,8 +1982,7 @@
     const a = audio();
     if (!a || a.state !== 'running') return;
     const t = a.currentTime + 0.01;
-    if (kind === 'cut') whoosh(a, t, 500, 3200, 0.38, 0.12);
-    else if (kind === 'wipe') { whoosh(a, t, 180, 1400, 0.7, 0.16); blip(a, t, 70, 0.5, 0.12); }
+    if (kind === 'wipe') { whoosh(a, t, 180, 1400, 0.7, 0.16); blip(a, t, 70, 0.5, 0.12); }
     else if (kind === 'roll') { let tt = t; for (let i = 0; i < 16; i++) { blip(a, tt, 1700 + (i % 2) * 300, 0.018, 0.05, 'square'); tt += 0.026 + i * 0.004; } }
     else if (kind === 'open') blip(a, t, 880, 0.08, 0.06);
     else if (kind === 'close') blip(a, t, 560, 0.08, 0.05);
@@ -2065,15 +2052,6 @@
     if (top !== toneTop) { toneTop = top; top ? d.setAttribute('data-hud-top', top) : d.removeAttribute('data-hud-top'); }
     if (bot !== toneBot) { toneBot = bot; bot ? d.setAttribute('data-hud-bot', bot) : d.removeAttribute('data-hud-bot'); }
   }
-  // Coupe de montage : une tête de lecture rouge puis bleue traverse l'écran à l'entrée de chaque scène
-  const cutEls = $$('.cut i'), seenScenes = new Set([0]);
-  function playCut(i) {
-    if (seenScenes.has(i)) return;
-    seenScenes.add(i);
-    sfx('cut');
-    if (lite) return;
-    gsap.fromTo(cutEls, { x: -60 }, { x: () => innerWidth * 1.2 + 80, duration: 0.8, ease: 'power2.inOut', stagger: 0.08, overwrite: true, onComplete: () => gsap.set(cutEls, { x: -60 }) });
-  }
   function hud() {
     const y = window.scrollY;
     hudTone();
@@ -2082,7 +2060,6 @@
     let i = 0;
     for (let k = 0; k < tops.length; k++) if (y + innerHeight * 0.45 >= tops[k]) i = k;
     if (i !== curScene) {
-      if (i > curScene) playCut(i);
       curScene = i;
       keys.forEach((k, j) => k.classList.toggle('on', j === i));
       scramble(sceneNow, String(i + 1).padStart(2, '0') + ' ' + scenes[i].dataset.scene);
