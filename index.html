@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-DpaQGSviRphdxwBAtjUbHNMQjUQb0XAJmbyY3Bo3iWQ=' 'sha256-HGVFSAKE+3NW93+KzOG2eC3RgpSJ27ygTWbI8XKl2b8=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-DpaQGSviRphdxwBAtjUbHNMQjUQb0XAJmbyY3Bo3iWQ=' 'sha256-VCI5QmSSWi1LfQmAodhuomKCyQ7QyPcgrbmL3l8Sg1M=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Alessandro Gagliardi · Ingénieur cybersécurité &amp; DevSecOps à Lyon</title>
 <meta name="description" content="Showreel interactif d’Alessandro Gagliardi, ingénieur cybersécurité et DevSecOps à Lyon : pentest, durcissement, réponse à incident, DevSecOps, projets et parcours.">
@@ -69,7 +69,8 @@
   @media (prefers-reduced-motion: no-preference) { html:not(.motion) { scroll-behavior: smooth; } }
   body {
     margin: 0;
-    background: var(--ink);
+    background-color: var(--ink);
+    background-image: var(--grain);
     color: var(--paper);
     font-family: var(--f-body);
     font-size: 1rem;
@@ -177,7 +178,7 @@
   .btn-line:hover { background: var(--paper); color: var(--ink); }
   html:not(.motion) [data-play] { display: none; }
 
-  .scene { position: relative; z-index: 1; overflow-x: clip; padding-inline: var(--gut); background-color: var(--ink); background-image: var(--grain); }
+  .scene { position: relative; z-index: 1; overflow-x: clip; padding-inline: var(--gut); }
 
   /* 01 Ouverture */
   .hero {
@@ -497,7 +498,9 @@
   .fin .btn { z-index: 1; }
 
   /* Ident, coupes, chiffres illustrés, vrais écrans, son */
-  .stats-viz, .hud-sound, .ident { display: none; }
+  .stats-viz, .hud-sound, .ident, .gl { display: none; }
+  /* Calque 3D : fixe, sous toutes les scènes (transparentes), au-dessus du fond de la page */
+  .motion .gl { display: block; position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0; }
   .intro .ident { display: grid; position: absolute; inset: 0; place-items: center; opacity: 0; pointer-events: none; }
   .ident-t { grid-area: 1 / 1; font-family: var(--f-display); font-weight: 900; font-size: min(34vmin, 260px); line-height: .8; letter-spacing: -.02em; font-variation-settings: "wdth" var(--w, 100); }
   .ident-r { color: var(--red); }
@@ -642,6 +645,7 @@
 <div class="pv" aria-hidden="true"><canvas></canvas><span class="pv-tag mono"></span></div>
 
 <!-- Tu lis le code source ? Bon réflexe. La suite du défi est dans la console du navigateur (F12). -->
+<canvas class="gl" aria-hidden="true"></canvas>
 <main>
   <section class="scene hero" id="ouverture" data-scene="Ouverture">
     <h1 class="hero-name">
@@ -1531,6 +1535,8 @@
   fitAll();
   ScrollTrigger.addEventListener('refreshInit', fitAll);
 
+  const glIntro = { v: 0 };
+
   /* ---------- 01 Ouverture ---------- */
   const hero = $('#ouverture');
   function heroIn() {
@@ -1539,6 +1545,8 @@
       .fromTo(chars, { yPercent: 118, '--w': 50 }, { yPercent: 0, '--w': num(getComputedStyle(d).getPropertyValue('--hn-w')) || 100, duration: 1.25, ease: 'expo.out', stagger: 0.032 })
       .fromTo('.hero-sub, .hero-cta', { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'expo.out', stagger: 0.1 }, '-=0.95')
       .fromTo('.hud', { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' }, '<')
+      .fromTo('.gl', { opacity: 0 }, { opacity: 1, duration: 1.4, ease: 'power2.out' }, 0)
+      .fromTo(glIntro, { v: 0 }, { v: 1, duration: 2.6, ease: 'power3.out' }, 0)
       .add(() => { hn.classList.remove('masking'); gsap.set(chars, { clearProps: '--w' }); });
   }
   ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false });
@@ -1546,7 +1554,7 @@
     .to('.hn-line:nth-child(1)', { xPercent: -14, ease: 'none' }, 0)
     .to('.hn-line:nth-child(2)', { xPercent: 10, ease: 'none' }, 0)
     .to('.hero-foot', { yPercent: 40, opacity: 0, ease: 'none' }, 0)
-    .to(hn, { scale: 0.94, opacity: 0.35, transformOrigin: '50% 100%', ease: 'none' }, 0);
+    .to(hn, { scale: 0.94, opacity: 0, transformOrigin: '50% 100%', ease: 'none' }, 0);
 
   if (fine) {
     const stretch = chars.map(c => gsap.quickTo(c, 'scaleY', { duration: 0.6, ease: 'power3.out' }));
@@ -2125,6 +2133,244 @@
 
   ScrollTrigger.create({ start: 0, end: 'max', onUpdate: hud });
   ScrollTrigger.addEventListener('refresh', () => { measureScenes(); hud(); renderNle(); vizSize(); drawStats(); });
+
+  /* ---------- Champ de points 3D : les 15 000 IP bannies, qui changent de forme à chaque scène ---------- */
+  (() => {
+    const cv = $('.gl');
+    let gl = null;
+    try { gl = cv.getContext('webgl', { alpha: true, antialias: false, premultipliedAlpha: true, powerPreference: 'low-power' }); } catch (e) {}
+    if (!gl) return;
+    const N = 15000, FOV = 40 * Math.PI / 180, CAMZ = 6;
+    const VS = `
+      precision highp float;
+      attribute vec4 aA; attribute vec4 aB; attribute vec3 cA; attribute vec3 cB; attribute float aR;
+      uniform mat3 uRA, uRB; uniform vec3 uOA, uOB; uniform vec2 uW, uAlpha, uScale, uMouse, uWave, uUni;
+      uniform float uMix, uTime, uAgit, uAspect, uRepel, uDpr, uDens;
+      uniform mat4 uProj;
+      varying vec3 vC; varying float vA;
+      vec3 flow(vec4 p, float w, float wave) {
+        vec3 q = p.xyz;
+        if (p.w != 0.0 && w != 0.0) q.x = mod(p.x + uTime * p.w + w, 2.0 * w) - w;
+        q.y += wave * sin(q.x * 1.3 + uTime * 0.9) * cos(q.z * 1.1 + uTime * 0.6);
+        return q;
+      }
+      void main() {
+        float t = smoothstep(aR * 0.35, aR * 0.35 + 0.65, uMix);
+        vec3 p = mix(uRA * flow(aA, uW.x, uWave.x) + uOA, uRB * flow(aB, uW.y, uWave.y) + uOB, t);
+        p += vec3(sin(aR * 91.7), cos(aR * 57.3), sin(aR * 33.1)) * sin(t * 3.14159) * 0.55;
+        float uni = mix(uUni.x, uUni.y, t);  // 1 = points réguliers (grille), 0 = points vivants
+        p += (0.018 * (1.0 - 0.85 * uni) + 0.05 * uAgit) * vec3(sin(uTime * 0.7 + aR * 60.0), cos(uTime * 0.9 + aR * 40.0), sin(uTime * 0.5 + aR * 20.0));
+        vec4 mv = vec4(p.xy, p.z - ${CAMZ.toFixed(1)}, 1.0);
+        vec4 clip = uProj * mv;
+        vec2 d = clip.xy / clip.w - uMouse; d.x *= uAspect;
+        float f = uRepel * smoothstep(0.24, 0.0, length(d));
+        mv.xy += normalize(d + 1e-4) * f * (-mv.z) * 0.09;
+        gl_Position = uProj * mv;
+        float dist = -mv.z;
+        gl_PointSize = dist < 0.4 ? 0.0 : min(14.0, 2.3 * uDpr * mix(uScale.x, uScale.y, t) * mix(0.45 + aR, 0.95, uni) * ${CAMZ.toFixed(1)} / dist);
+        vC = mix(cA, cB, t);
+        vA = uDens * mix(uAlpha.x, uAlpha.y, t) * (1.0 - mix(0.35, 0.05, uni) * (0.5 + 0.5 * sin(uTime * 1.7 + aR * 50.0))) * clamp(1.0 - (dist - 6.0) / 7.0, 0.2, 1.0);
+      }`;
+    const FS = `
+      precision mediump float;
+      varying vec3 vC; varying float vA;
+      void main() {
+        float d = length(gl_PointCoord - 0.5);
+        if (d > 0.5) discard;
+        float a = vA * smoothstep(0.5, 0.12, d);
+        gl_FragColor = vec4(vC * a, a);
+      }`;
+    const sh = (type, src) => { const o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(o)); return o; };
+    const prog = gl.createProgram();
+    try {
+      gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+    } catch (e) { console.warn('Calque 3D désactivé :', e.message); return; }
+    gl.useProgram(prog);
+    const U = {};
+    ['uRA', 'uRB', 'uOA', 'uOB', 'uW', 'uWave', 'uUni', 'uAlpha', 'uScale', 'uMouse', 'uMix', 'uTime', 'uAgit', 'uAspect', 'uRepel', 'uDpr', 'uDens', 'uProj'].forEach(n => { U[n] = gl.getUniformLocation(prog, n); });
+    const L = {};
+    ['aA', 'aB', 'cA', 'cB', 'aR'].forEach(n => { L[n] = gl.getAttribLocation(prog, n); gl.enableVertexAttribArray(L[n]); });
+    const rb = gl.createBuffer(), rr = new Float32Array(N);
+    for (let i = 0; i < N; i++) rr[i] = rnd(i * 0.731 + 101);
+    gl.bindBuffer(gl.ARRAY_BUFFER, rb); gl.bufferData(gl.ARRAY_BUFFER, rr, gl.STATIC_DRAW); gl.vertexAttribPointer(L.aR, 1, gl.FLOAT, false, 0, 0);
+    gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE); gl.disable(gl.DEPTH_TEST); gl.clearColor(0, 0, 0, 0);
+
+    // Formes : positions (x, y, z, vitesse de défilement horizontal) et couleurs, recalculées à chaque rafraîchissement de la mise en page
+    const NAMES = ['seed', 'cloud', 'lines', 'grid', 'helix', 'sphere', 'field', 'ring'];
+    const BUF = {}, POSE = {};
+    NAMES.forEach(n => { BUF[n] = { p: gl.createBuffer(), c: gl.createBuffer() }; });
+    const PAPER = [236, 237, 239], RED = [240, 80, 58], BLUE = [143, 155, 255];
+    const gauss = n => (rnd(n) + rnd(n + 0.37) + rnd(n + 0.71) - 1.5) / 1.5;
+    const tint = (i, k) => { const r = rnd(i * 7.1 + k); return r < 0.07 ? RED : r < 0.14 ? BLUE : PAPER; };
+    let vw = 1, vh = 1, cw = 1, ch = 1;
+    const yOf = px => (0.5 - px / ch) * vh;
+    function build() {
+      cw = Math.max(1, cv.clientWidth); ch = Math.max(1, cv.clientHeight);
+      vh = 2 * Math.tan(FOV / 2) * CAMZ; vw = vh * cw / ch;
+      const portrait = cw / ch < 0.85, pxW = vh / ch;
+      drawN = cw * ch < 700000 ? N / 2 : N;
+      gl.uniform1f(U.uDens, Math.min(1, Math.max(0.5, Math.sqrt(cw * ch / (1440 * 900) * N / drawN))));
+      const P = new Float32Array(N * 4), C = new Uint8Array(N * 3);
+      const put = (i, x, y, z, w, col) => { P.set([x, y, z, w], i * 4); C.set(col, i * 3); };
+      const upload = n => { gl.bindBuffer(gl.ARRAY_BUFFER, BUF[n].p); gl.bufferData(gl.ARRAY_BUFFER, P, gl.STATIC_DRAW); gl.bindBuffer(gl.ARRAY_BUFFER, BUF[n].c); gl.bufferData(gl.ARRAY_BUFFER, C, gl.STATIC_DRAW); };
+      const pose = (n, o) => { POSE[n] = Object.assign({ rx: 0, ry: 0, rz: 0, sx: 0, sy: 0, sz: 0, off: [0, 0, 0], alpha: 0.8, scale: 1, repel: 0.6, mouse: 0.1, W: 0, wave: 0, uni: 0 }, o); };
+
+      for (let i = 0; i < N; i++) put(i, gauss(i * 1.1) * 0.08, gauss(i * 2.3) * 0.08, gauss(i * 3.7) * 0.08, 0, PAPER);
+      upload('seed'); pose('seed', { alpha: 0.9, repel: 0 });
+
+      // Ouverture : un anneau net qui tourne en orbite derrière le nom, dans un nuage aplati et discret
+      const Rg = portrait ? vw * 0.47 : Math.min(vw * 0.3, vh * 0.55), tube = portrait ? 0.6 : 1, dim = c => c.map(v => Math.round(v * 0.5));
+      for (let i = 0; i < N; i++) {
+        const u = rnd(i * 1.37 + 3), v = rnd(i * 2.11 + 5), s = rnd(i * 3.03 + 7);
+        if (i % 20 < 7) {
+          const th = u * TAU, ph = Math.acos(2 * v - 1), k = Math.pow(s, 0.8);
+          put(i, Math.sin(ph) * Math.cos(th) * k * vw * 0.62, Math.cos(ph) * k * vh * (portrait ? 0.22 : 0.32), Math.sin(ph) * Math.sin(th) * k * 2.6, 0, dim(tint(i, 1)));
+        } else {
+          const b = u * TAU, a = v * TAU, r = (0.03 + 0.17 * s * s) * tube;
+          put(i, (Rg + r * Math.cos(a)) * Math.cos(b), r * Math.sin(a), (Rg + r * Math.cos(a)) * Math.sin(b), 0, tint(i, 2));
+        }
+      }
+      upload('cloud'); pose('cloud', { rx: portrait ? 0.3 : 0.5, rz: 0.12, sy: 0.08, alpha: 0.95, scale: 1.05, repel: 1, mouse: 0.3 });
+
+      // Manifeste : trois flux alignés sur « J'attaque », « Je durcis », « Je vérifie »
+      const ys = manifY.length === 3 ? manifY.map(yOf) : [vh * 0.25, 0, -vh * 0.25], WL = vw * 0.56;
+      for (let i = 0; i < N; i++) {
+        const k = i % 3;
+        put(i, (rnd(i * 1.9 + 11) * 2 - 1) * WL, ys[k] + gauss(i * 4.1) * vh * (portrait ? 0.011 : 0.018), gauss(i * 5.3) * (portrait ? 0.3 : 0.5),
+          (0.12 + 0.4 * rnd(i * 6.7)) * (k === 1 ? -1 : 1), k === 0 ? RED : k === 1 ? BLUE : PAPER);
+      }
+      upload('lines'); pose('lines', { alpha: 0.9, scale: 0.9, repel: 0.6, mouse: 0.05, W: WL });
+
+      // Chiffres : océan de 200 × 75 points (15 000 adresses IP) qui ondule sous les chiffres, dont 45 en rouge (les 45 vulnérabilités)
+      for (let i = 0; i < N; i++) {
+        const half = i < N / 2, j = half ? i : i - N / 2, c = (j % 100) * 2 + (half ? 0 : 1), r = Math.floor(j / 100);  // colonnes paires d'abord
+        put(i, (c / 199 - 0.5) * vw * 1.9, 0, 1 - (r / 74) * 7, 0, rnd(i * 3.9 + 41) < 0.003 ? RED : BLUE);
+      }
+      upload('grid'); pose('grid', { rx: 0.08, off: [0, -vh * 0.34, 0], alpha: 0.8, scale: 0.85, repel: 0.4, mouse: 0.06, wave: 0.22, uni: 1 });
+
+      // Parcours : hélice à trois brins qui file derrière le titre, comme une bande qui défile
+      const yc = careerY === null ? vh * 0.3 : yOf(careerY), WH = vw * 0.56;
+      for (let i = 0; i < N; i++) {
+        const k = i % 3, x = (rnd(i * 2.9 + 13) * 2 - 1) * WH, ph = k * TAU / 3 + x * (portrait ? 2.6 : 1.4), rad = (portrait ? 0.15 : 0.32) + gauss(i * 3.3) * 0.03;
+        put(i, x, yc + Math.sin(ph) * rad, Math.cos(ph) * rad, 0.16, k === 0 ? RED : k === 1 ? BLUE : PAPER);
+      }
+      upload('helix'); pose('helix', { alpha: 0.65, scale: 0.9, repel: 0.5, mouse: 0.08, W: WH });
+
+      // En ce moment : sphère qui tourne, traversée d'une ligne rouge
+      const Rs = portrait ? vw * 0.3 : Math.min(vh * 0.26, vw * 0.16);
+      for (let i = 0; i < N; i++) {
+        const j = (i * 7919) % N, y = 1 - 2 * (j + 0.5) / N, r = Math.sqrt(1 - y * y), th = j * 2.399963;  // ordre mélangé : toute moitié couvre la sphère
+        put(i, Math.cos(th) * r * Rs, y * Rs, Math.sin(th) * r * Rs, 0, Math.abs(y - 0.18) < 0.025 ? RED : rnd(i * 9.1) < 0.06 ? BLUE : PAPER);
+      }
+      upload('sphere'); pose('sphere', { rx: 0.4, sy: 0.25, off: portrait ? [vw * 0.4, vh * 0.3, -0.5] : [vw * 0.33, -vh * 0.02, 0], alpha: 0.8, scale: 1, repel: 0.8, mouse: 0.2 });
+
+      // Terrain, projets, arsenal, générique : champ profond qui dérive lentement
+      const WF = vw * 0.95;
+      for (let i = 0; i < N; i++) put(i, (rnd(i * 1.7 + 17) * 2 - 1) * WF, (rnd(i * 2.3 + 19) * 2 - 1) * vh * 0.8, -6 + rnd(i * 3.1 + 23) * 8.5, (rnd(i * 4.3) - 0.5) * 0.1, tint(i, 3));
+      upload('field'); pose('field', { alpha: 0.35, scale: 0.8, repel: 0.5, mouse: 0.12, W: WF });
+
+      // Fin : anneau autour du disque « FIN »
+      const Rr = ringPx * pxW;
+      for (let i = 0; i < N; i++) {
+        const a = rnd(i * 1.3 + 29) * TAU, halo = i % 5 === 0, rad = halo ? Rr * (1.05 + 0.5 * rnd(i * 2.9)) : Rr * (1.02 + gauss(i * 3.7) * 0.012);
+        put(i, Math.cos(a) * rad, Math.sin(a) * rad, gauss(i * 4.9) * (halo ? 0.4 : 0.06), 0, rnd(i * 5.3) < 0.1 ? RED : PAPER);
+      }
+      upload('ring'); pose('ring', { sz: 0.08, alpha: 0.85, scale: 1, repel: 0.3, mouse: 0.04 });
+      boundA = boundB = '';
+    }
+
+    // Enchaînement des formes au défilement : chaque scène appelle la sienne pendant qu'elle entre à l'écran
+    const SCENE_F = { ouverture: 'cloud', manifeste: 'lines', chiffres: 'grid', parcours: 'helix', maintenant: 'sphere', terrain: 'field', projets: 'field', arsenal: 'field', generique: 'field' };
+    let manifY = [], careerY = null, ringPx = 280, windows = [], boundA = '', boundB = '', sizeDirty = true, drawN = N;
+    function refresh() {
+      const m = $('#manifeste');
+      manifY = $$('.ml-t', m).map(el => el.offsetTop + el.offsetHeight * 0.3);  // haut des lettres : les légendes restent lisibles
+      const ct = $('.career-top', career);
+      careerY = ct.offsetTop + ct.offsetHeight * 0.5;
+      ringPx = $('.fin-disc').offsetWidth / 2;
+      windows = [];
+      let prev = 'cloud';
+      scenes.forEach((sc, i) => {
+        const f = SCENE_F[sc.id] || 'field';
+        if (i && f !== prev) windows.push({ s: Math.max(0, tops[i] - VH * 0.8), e: Math.max(1, tops[i] - VH * 0.1), a: prev, b: f });
+        prev = f;
+      });
+      const ft = docTop(fin);
+      windows.push({ s: ft - VH * 0.8, e: ft - VH * 0.05, a: prev, b: 'ring' });
+      sizeDirty = true;
+      build();
+    }
+    function state(y) {
+      if (glIntro.v < 1) return ['seed', 'cloud', glIntro.v];
+      let a = 'cloud', b = 'cloud';
+      for (const w of windows) {
+        if (y < w.s) break;
+        if (y < w.e) { const m = (y - w.s) / (w.e - w.s); return [w.a, w.b, m * m * (3 - 2 * m)]; }
+        a = w.a; b = w.b;
+      }
+      return [a, b, 1];
+    }
+    function bind(a, b) {
+      [['aA', 'cA', a], ['aB', 'cB', b]].forEach(([pl, cl, n]) => {
+        gl.bindBuffer(gl.ARRAY_BUFFER, BUF[n].p); gl.vertexAttribPointer(L[pl], 4, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, BUF[n].c); gl.vertexAttribPointer(L[cl], 3, gl.UNSIGNED_BYTE, true, 0, 0);
+      });
+      boundA = a; boundB = b;
+    }
+    const rot = (x, y, z) => {
+      const cx = Math.cos(x), sx = Math.sin(x), cy = Math.cos(y), sy = Math.sin(y), cz = Math.cos(z), sz = Math.sin(z);
+      // Rz * Ry * Rx, en colonnes pour WebGL
+      return new Float32Array([cz * cy, sz * cy, -sy, cz * sy * sx - sz * cx, sz * sy * sx + cz * cx, cy * sx, cz * sy * cx + sz * sx, sz * sy * cx - cz * sx, cy * cx]);
+    };
+    const persp = (fov, asp, n, f) => { const t = 1 / Math.tan(fov / 2), nf = 1 / (n - f); return new Float32Array([t / asp, 0, 0, 0, 0, t, 0, 0, 0, 0, (f + n) * nf, -1, 0, 0, 2 * f * n * nf, 0]); };
+
+    const ptr = { x: 0, y: 0, sx: 0, sy: 0, on: false, k: 0 };
+    if (fine) {
+      addEventListener('pointermove', e => { ptr.x = e.clientX / innerWidth * 2 - 1; ptr.y = 1 - e.clientY / innerHeight * 2; ptr.on = true; }, { passive: true });
+      d.addEventListener('pointerleave', () => { ptr.on = false; });
+    }
+    addEventListener('resize', () => { sizeDirty = true; });
+    let agit = 0, live = true;
+    cv.addEventListener('webglcontextlost', e => { e.preventDefault(); live = false; cv.style.display = 'none'; });
+
+    function frame(time) {
+      if (!live) return;
+      if (lite) { live = false; cv.style.display = 'none'; return; }
+      const y = window.scrollY, tt = fTL.scrollTrigger;
+      if (tt && y > tt.start + 2 && y < tt.end - 2) return;  // les aplats rouge et bleu couvrent tout l'écran
+      if (sizeDirty) {
+        sizeDirty = false;
+        const dpr = Math.min(1.5, window.devicePixelRatio || 1), w = Math.max(1, cv.clientWidth), h = Math.max(1, cv.clientHeight);
+        cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+        gl.viewport(0, 0, cv.width, cv.height);
+        gl.uniformMatrix4fv(U.uProj, false, persp(FOV, w / h, 0.1, 60));
+        gl.uniform1f(U.uAspect, w / h); gl.uniform1f(U.uDpr, dpr);
+      }
+      const [a, b, m] = state(y);
+      if (a !== boundA || b !== boundB) bind(a, b);
+      const A = POSE[a], B = POSE[b];
+      ptr.sx += ((ptr.on ? ptr.x : 0) - ptr.sx) * 0.06; ptr.sy += ((ptr.on ? ptr.y : 0) - ptr.sy) * 0.06;
+      ptr.k += ((ptr.on ? 1 : 0) - ptr.k) * 0.08;
+      agit += (Math.min(1, Math.abs((lenis && lenis.velocity) || 0) / 45) - agit) * 0.08;
+      gl.uniformMatrix3fv(U.uRA, false, rot(A.rx + A.sx * time - ptr.sy * A.mouse, A.ry + A.sy * time + ptr.sx * A.mouse, A.rz + A.sz * time));
+      gl.uniformMatrix3fv(U.uRB, false, rot(B.rx + B.sx * time - ptr.sy * B.mouse, B.ry + B.sy * time + ptr.sx * B.mouse, B.rz + B.sz * time));
+      gl.uniform3fv(U.uOA, A.off); gl.uniform3fv(U.uOB, B.off);
+      gl.uniform2f(U.uW, A.W, B.W);
+      gl.uniform2f(U.uWave, A.wave, B.wave);
+      gl.uniform2f(U.uUni, A.uni, B.uni);
+      gl.uniform2f(U.uAlpha, A.alpha, B.alpha);
+      gl.uniform2f(U.uScale, A.scale, B.scale);
+      gl.uniform2f(U.uMouse, ptr.on ? ptr.x : 9, ptr.on ? ptr.y : 9);
+      gl.uniform1f(U.uRepel, (A.repel + (B.repel - A.repel) * m) * ptr.k);
+      gl.uniform1f(U.uMix, m); gl.uniform1f(U.uTime, time); gl.uniform1f(U.uAgit, agit);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.drawArrays(gl.POINTS, 0, drawN);
+    }
+    ScrollTrigger.addEventListener('refresh', refresh);
+    refresh();
+    gsap.ticker.add(frame);
+  })();
 
   /* ---------- Amorce : 3, 2, 1, ouverture ---------- */
   history.scrollRestoration = 'manual';

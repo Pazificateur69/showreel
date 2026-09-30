@@ -19,6 +19,7 @@ Pages statiques, sans build côté site.
 - [GSAP](https://gsap.com) 3.13 + ScrollTrigger (séquences pilotées par le défilement), [Lenis](https://lenis.darkroom.engineering) (défilement fluide), chargés depuis cdnjs et jsDelivr avec contrôle d'intégrité (SRI).
 - Polices Google Fonts : Anybody (axe de largeur animé), Instrument Sans, Martian Mono.
 - Aperçus de projets dessinés en Canvas 2D, plus les vrais écrans (démos SVG des dépôts ExploitSpec et NightOwl, capture de curs3d.fr dans `img/`). Icônes Phosphor.
+- Calque 3D en WebGL pur (sans bibliothèque) : 15 000 points qui prennent une forme par scène (anneau en orbite derrière le nom, flux sous le manifeste, océan de points sous les chiffres, hélice, sphère, champ profond, anneau autour de « FIN »). Ils s'écartent autour de la souris et s'agitent quand on défile vite. Moitié des points sur petit écran ; le calque s'éteint tout seul si la machine peine.
 - Chiffres illustrés dessinés en Canvas 2D à leur échelle réelle (15 000 points, jauge CVSS, 901 cases sur 1 000…), redessinés seulement quand le défilement change l'image.
 - Son coupé par défaut, synthétisé en direct avec la Web Audio API (aucun fichier audio) ; le choix est mémorisé dans le navigateur.
 - `index.html` (FR) est la seule source. Après chaque modification, lancer `python3 build.py` : il recalcule les empreintes de la politique de sécurité (CSP) et régénère la version anglaise `en/index.html`, en s'arrêtant si un texte français n'a plus sa traduction.
