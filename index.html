@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-DpaQGSviRphdxwBAtjUbHNMQjUQb0XAJmbyY3Bo3iWQ=' 'sha256-yaFXrXOsmU+g1PH1o6q3e+LkCbSa7HRo1CNHUtXkOr8=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-DpaQGSviRphdxwBAtjUbHNMQjUQb0XAJmbyY3Bo3iWQ=' 'sha256-i+8yRlMyBsfr8zaAT5tvnn7gWnl41tSOyxcRxoQBMng=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Alessandro Gagliardi · Ingénieur cybersécurité &amp; DevSecOps à Lyon</title>
 <meta name="description" content="Showreel interactif d’Alessandro Gagliardi, ingénieur cybersécurité et DevSecOps à Lyon : pentest, durcissement, réponse à incident, DevSecOps, projets et parcours.">
@@ -330,6 +330,26 @@
   .nle-head { display: none; position: absolute; top: 0; bottom: 0; left: calc(var(--p) * 100%); width: 1px; background: var(--red); pointer-events: none; }
   .nle-head::before { content: ""; position: absolute; top: 0; left: -5px; width: 11px; height: 12px; background: var(--red); clip-path: polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%); }
 
+  /* 05 En ce moment : bandeaux d'incrustation façon journal télévisé */
+  .now { z-index: 2; padding-block: calc(var(--hud) + 10vh) calc(var(--hud) + 8vh); }
+  .now-head { display: grid; gap: 16px; margin-bottom: clamp(32px, 6vh, 64px); }
+  .now-live { display: inline-flex; align-items: center; gap: 10px; color: var(--red); }
+  .now-live i { width: 8px; height: 8px; background: var(--red); animation: live 1.6s ease-in-out infinite; }
+  @keyframes live { 50% { opacity: .2; } }
+  @media (prefers-reduced-motion: reduce) { .now-live i { animation: none; } }
+  .now-date { color: var(--mute); }
+  .thirds { display: grid; gap: clamp(16px, 2.6vh, 26px); max-width: 1040px; }
+  .third { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); overflow: hidden; }
+  .third-tag { display: flex; align-items: center; padding: 12px 16px; background: var(--paper); color: var(--ink); font-weight: 600; }
+  .third-bar { display: grid; gap: 6px; padding: 16px 22px; background: var(--ink-2); border: 1px solid var(--line); border-left: 0; }
+  .third-main { font-family: var(--f-display); font-weight: 750; font-size: clamp(1.2rem, 2.3vw, 2rem); line-height: 1.05; text-transform: uppercase; font-variation-settings: "wdth" 86; text-wrap: balance; }
+  .third-sub { max-width: 68ch; color: var(--mute); }
+  @media (max-width: 600px) {
+    .third { grid-template-columns: 1fr; }
+    .third-tag { padding: 8px 14px; }
+    .third-bar { border-left: 1px solid var(--line); border-top: 0; padding: 14px 16px; }
+  }
+
   /* 05 Terrain */
   .field { z-index: 2; padding: 0; background-color: var(--red); }
   .fp { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; padding: calc(var(--hud) + 5vh) var(--gut); background-image: var(--grain); }
@@ -576,13 +596,14 @@
     <div class="scrub-fill"></div>
     <ol class="keys">
       <li><a class="key on" href="#ouverture" style="--x:0"><i></i><span>01 Ouverture</span></a></li>
-      <li><a class="key" href="#manifeste" style="--x:.14"><i></i><span>02 Manifeste</span></a></li>
-      <li><a class="key" href="#chiffres" style="--x:.28"><i></i><span>03 Chiffres</span></a></li>
-      <li><a class="key" href="#parcours" style="--x:.42"><i></i><span>04 Parcours</span></a></li>
-      <li><a class="key" href="#terrain" style="--x:.56"><i></i><span>05 Terrain</span></a></li>
-      <li><a class="key" href="#projets" style="--x:.7"><i></i><span>06 Projets</span></a></li>
-      <li><a class="key" href="#arsenal" style="--x:.84"><i></i><span>07 Arsenal</span></a></li>
-      <li><a class="key" href="#generique" style="--x:.98"><i></i><span>08 Générique</span></a></li>
+      <li><a class="key" href="#manifeste" style="--x:.12"><i></i><span>02 Manifeste</span></a></li>
+      <li><a class="key" href="#chiffres" style="--x:.24"><i></i><span>03 Chiffres</span></a></li>
+      <li><a class="key" href="#parcours" style="--x:.36"><i></i><span>04 Parcours</span></a></li>
+      <li><a class="key" href="#maintenant" style="--x:.48"><i></i><span>05 En ce moment</span></a></li>
+      <li><a class="key" href="#terrain" style="--x:.6"><i></i><span>06 Terrain</span></a></li>
+      <li><a class="key" href="#projets" style="--x:.72"><i></i><span>07 Projets</span></a></li>
+      <li><a class="key" href="#arsenal" style="--x:.84"><i></i><span>08 Arsenal</span></a></li>
+      <li><a class="key" href="#generique" style="--x:.96"><i></i><span>09 Générique</span></a></li>
     </ol>
     <div class="scrub-head"></div>
   </div>
@@ -603,7 +624,7 @@
       </span>
     </h1>
     <div class="hero-foot">
-      <p class="hero-sub">Ingénieur cybersécurité et DevSecOps à Lyon. Disponible dès la rentrée 2026 pour une alternance, 3&nbsp;semaines en entreprise et 1&nbsp;à l’école.</p>
+      <p class="hero-sub">Ingénieur cybersécurité et DevSecOps à Lyon. En alternance pendant mon Mastère cybersécurité&nbsp;: 3&nbsp;semaines en entreprise, 1&nbsp;à l’école.</p>
       <div class="hero-cta">
         <button class="btn btn-solid" type="button" data-play data-magnetic aria-keyshortcuts="Space"><svg class="ico" aria-hidden="true"><use href="#i-play"/></svg><span>Lancer le showreel</span></button>
         <a class="btn btn-line" href="#contact" data-magnetic>Me contacter</a>
@@ -665,8 +686,8 @@
           <div class="cc-head"><h3 class="cc-title">Mastère Cybersécurité, Bac+5</h3>
           <p class="cc-org">Guardia Cybersecurity School. 1re année en cours, en alternance&nbsp;: 3&nbsp;semaines en entreprise, 1&nbsp;semaine à l’école.</p></div>
         </article>
-        <article class="clip-card" data-track="V1" data-from="2025-09" data-to="2026-09" data-label="NetStrategy">
-          <p class="cc-meta mono"><span>Sept. 2025 <svg class="ico" aria-label="à"><use href="#i-arrow"/></svg> sept. 2026</span><span>Feyzin (69)</span></p>
+        <article class="clip-card" data-track="V1" data-from="2025-09" data-to="now" data-label="NetStrategy">
+          <p class="cc-meta mono"><span>Sept. 2025 <svg class="ico" aria-label="à"><use href="#i-arrow"/></svg> aujourd’hui</span><span>Feyzin (69)</span></p>
           <div class="cc-head"><h3 class="cc-title">Alternant cybersécurité et DevSecOps</h3>
           <p class="cc-org">NetStrategy, agence web et produits SaaS. Référent sécurité du parc applicatif et des serveurs de production.</p></div>
           <ul class="cc-list">
@@ -726,6 +747,37 @@
     </div>
   </section>
 
+  <section class="scene now" id="maintenant" data-scene="En ce moment">
+    <div class="now-head">
+      <p class="now-live mono"><i></i>En direct</p>
+      <h2 class="big-title">En ce moment</h2>
+      <p class="now-date mono">Mis à jour en septembre 2026</p>
+    </div>
+    <ul class="thirds">
+      <li class="third">
+        <p class="third-tag mono">Poste</p>
+        <div class="third-bar">
+          <p class="third-main">Alternant cybersécurité et DevSecOps chez NetStrategy</p>
+          <p class="third-sub">Référent sécurité du parc applicatif et des serveurs de production, depuis septembre 2025.</p>
+        </div>
+      </li>
+      <li class="third">
+        <p class="third-tag mono">Formation</p>
+        <div class="third-bar">
+          <p class="third-main">Mastère Cybersécurité, 1re année</p>
+          <p class="third-sub">Guardia Cybersecurity School, Lyon. Mémoire en préparation&nbsp;: la cyber-résilience d’un prestataire web et SaaS multi-clients, sous l’angle de la chaîne d’approvisionnement et de NIS2.</p>
+        </div>
+      </li>
+      <li class="third">
+        <p class="third-tag mono">Projet</p>
+        <div class="third-bar">
+          <p class="third-main">ExploitSpec, en route vers la v1.0</p>
+          <p class="third-sub">Version 0.2.0 publiée en août 2026. Prochaine étape&nbsp;: une politique de compatibilité et une première version stable.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
   <section class="scene field" id="terrain" data-scene="Terrain">
     <div class="fp fp-off">
       <div class="fp-inner">
@@ -773,6 +825,7 @@
             <p class="pd-tags mono">Go / GitHub Action / BOLA-IDOR</p>
             <div class="pd-links">
               <a class="pd-link" href="https://pazent.github.io/exploitspec/" target="_blank" rel="noopener">Site du projet <svg class="ico" aria-hidden="true"><use href="#i-out"/></svg></a>
+              <a class="pd-link" href="https://github.com/pazent/exploitspec/discussions/8" target="_blank" rel="noopener">Étude de cas <svg class="ico" aria-hidden="true"><use href="#i-out"/></svg></a>
               <a class="pd-link" href="https://github.com/pazent/exploitspec" target="_blank" rel="noopener">Code source <svg class="ico" aria-hidden="true"><use href="#i-out"/></svg></a>
             </div>
           </div>
@@ -1085,7 +1138,7 @@
   const nleInner = $('.nle-inner', career);
   const clips = $$('.clip-card', career).map(card => ({
     card, track: card.dataset.track, label: card.dataset.label,
-    a: Math.max(0, toM(card.dataset.from)), b: Math.min(SPAN, toM(card.dataset.to) + 1)
+    a: Math.max(0, toM(card.dataset.from)), b: Math.min(SPAN, card.dataset.to === 'now' ? todayM + 1 : toM(card.dataset.to) + 1)
   }));
   nleInner.style.setProperty('--today', (todayM / SPAN * 100) + '%');
   const ruler = $('.nle-ruler', career);
@@ -1108,10 +1161,11 @@
     cl.el = el;
   });
   d.classList.add('nle-on');
-  const PRIO = ['V1', 'V2', 'A1'];
+  // Le moniteur montre ce qui a commencé le plus récemment parmi ce qui est en cours
   const shownAt = m => {
-    for (const tr of PRIO) { const c = clips.find(c => c.track === tr && m >= c.a && m < c.b); if (c) return c; }
-    return null;
+    let best = null;
+    for (const c of clips) if (m >= c.a && m < c.b && (!best || c.a > best.a)) best = c;
+    return best;
   };
 
   /* ---------- Aperçus animés des projets (canvas) ---------- */
@@ -1517,7 +1571,7 @@
 
   /* ---------- 04 Parcours ---------- */
   const view = $('.nle-view', career), dateEl = $('.career-date', career), monName = $('.mon-name', career);
-  const M0 = 1.5, M1 = Math.min(SPAN - 0.5, Math.max(todayM, 45.6));
+  const M0 = 1.5, M1 = Math.min(SPAN - 0.5, todayM);
   const st = { m: M0 };
   let cur = null, vw = 0, iw = 0;
   const measureNle = () => { vw = view.clientWidth; iw = nleInner.offsetWidth; };
@@ -1553,6 +1607,14 @@
     setPlaying(false);
     goTo(tr.start + p * (tr.end - tr.start), 1.2);
   }));
+
+  /* ---------- 05 En ce moment ---------- */
+  $$('.third').forEach(el => {
+    gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' } })
+      .fromTo($('.third-tag', el), { xPercent: -101 }, { xPercent: 0, duration: 0.6, ease: 'expo.out' })
+      .fromTo($('.third-bar', el), { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.8, ease: 'expo.out' }, '-=0.35')
+      .fromTo($$('.third-main, .third-sub', el), { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'expo.out' }, '-=0.5');
+  });
 
   /* ---------- 05 Terrain ---------- */
   const field = $('#terrain');
@@ -1717,9 +1779,9 @@
     if (!tr || fTL.labels.wipe === undefined) return;
     const y = window.scrollY, vh = innerHeight, mid = fTL.labels.wipe + 0.55;
     let top = '', bot = '';
-    if (y < tr.start) { const s = tr.start - y; if (s < 44) top = 'ink'; if (s < vh - 40) bot = 'ink'; }
+    if (y < tr.start) { const s = tr.start - y; if (s < 36) top = 'ink'; if (s < vh - 26) bot = 'ink'; }
     else if (y <= tr.end) top = bot = fTL.time() < mid ? 'ink' : 'paper';
-    else { const e = tr.end + vh - y; if (e > 44) top = 'paper'; if (e > vh - 40) bot = 'paper'; }
+    else { const e = tr.end + vh - y; if (e > 36) top = 'paper'; if (e > vh - 26) bot = 'paper'; }
     if (top !== toneTop) { toneTop = top; top ? d.setAttribute('data-hud-top', top) : d.removeAttribute('data-hud-top'); }
     if (bot !== toneBot) { toneBot = bot; bot ? d.setAttribute('data-hud-bot', bot) : d.removeAttribute('data-hud-bot'); }
   }
