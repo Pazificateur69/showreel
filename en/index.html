@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGvkiPHjWdXf5Rgynt2wCWYEZEH+u21pt1KsrG8s1kc=' 'sha256-PAvZ19X5QYCCmMQ51pIjhWy74/Rv5ceT9JnE1w3ytg8=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGvkiPHjWdXf5Rgynt2wCWYEZEH+u21pt1KsrG8s1kc=' 'sha256-VKUttZIYfTrhPAjL1S7oXqb7Karfy1qFKN9/qh2xY5U=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Alessandro Gagliardi · Cybersecurity &amp; DevSecOps Engineer in Lyon</title>
 <meta name="description" content="Interactive showreel of Alessandro Gagliardi, cybersecurity and DevSecOps engineer in Lyon: penetration testing, hardening, incident response, DevSecOps, projects and career.">
@@ -65,7 +65,7 @@
   @media (max-width: 700px) { :root { --hn-w: 64; } }
 
   *, *::before, *::after { box-sizing: border-box; }
-  html { background: var(--ink); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  html { background: var(--ink); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scrollbar-width: thin; scrollbar-color: var(--line) var(--ink); }
   html.lenis, html.lenis body { height: auto; }
   .lenis.lenis-smooth { scroll-behavior: auto !important; }
   .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
@@ -89,6 +89,11 @@
   a { color: inherit; }
   button { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+  /* Sur les aplats rouge et bleu, focus et sélection changent de couleur pour rester visibles */
+  [data-hud-top="ink"] .hud-top :focus-visible, [data-hud-bot="ink"] .hud-bot :focus-visible { outline-color: var(--ink); }
+  [data-hud-top="paper"] .hud-top :focus-visible, [data-hud-bot="paper"] .hud-bot :focus-visible { outline-color: var(--paper); }
+  .fp-off ::selection { background: var(--ink); color: var(--red); }
+  .fp-def ::selection { background: var(--paper); color: var(--blue); }
   .ico { width: 1.05em; height: 1.05em; flex: none; fill: currentColor; }
   .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   .mono { font-family: var(--f-mono); font-size: .68rem; line-height: 1.45; letter-spacing: .07em; text-transform: uppercase; font-stretch: 87.5%; }
@@ -2832,6 +2837,8 @@
       }
       const [a, b, m] = state(y);
       if (a !== boundA || b !== boundB) bind(a, b);
+      // L'anneau suit le centre du disque de la fin pendant qu'il monte : le noir se resserre pile sur la couronne
+      if (b === 'ring') { const r = fin.getBoundingClientRect(); POSE.ring.off = [0, -(r.top + r.height / 2 - ch / 2) * vh / ch, 0]; }
       const A = POSE[a], B = POSE[b];
       ptr.sx += ((ptr.on ? ptr.x : 0) - ptr.sx) * 0.06; ptr.sy += ((ptr.on ? ptr.y : 0) - ptr.sy) * 0.06;
       ptr.k += ((ptr.on ? 1 : 0) - ptr.k) * 0.08;
