@@ -293,6 +293,16 @@ T = [
      'font-size: clamp(2.6rem, 8.5vw, 8rem); line-height: .8; text-transform: uppercase; font-variation-settings: "wdth" var(--w, 70);', 1),
     ('<span>Rembobiner</span>', '<span>Rewind</span>', 1),
     # ---- Clap et pied de page ----
+    # ---- Chiffres : catégories, en-tête, chapitres ----
+    ('<p class="beat-tag mono"><i></i>Audit applicatif</p>', '<p class="beat-tag mono"><i></i>Application audit</p>', 1),
+    ('<p class="beat-tag mono"><i></i>Élévation de privilèges</p>', '<p class="beat-tag mono"><i></i>Privilege escalation</p>', 1),
+    ('<p class="beat-tag mono"><i></i>Défense active</p>', '<p class="beat-tag mono"><i></i>Active defence</p>', 1),
+    ('<p class="beat-tag mono"><i></i>Durcissement serveur</p>', '<p class="beat-tag mono"><i></i>Server hardening</p>', 1),
+    ('<p class="beat-tag mono"><i></i>IA offensive</p>', '<p class="beat-tag mono"><i></i>Offensive AI</p>', 1),
+    ('<p class="beat-tag mono"><i></i>Blockchain post-quantique</p>', '<p class="beat-tag mono"><i></i>Post-quantum blockchain</p>', 1),
+    ('<div class="beat-head" aria-hidden="true"><span class="mono">Chiffres clés</span>', '<div class="beat-head" aria-hidden="true"><span class="mono">Key figures</span>', 1),
+    ('<span class="bb-l mono">Vulnérabilités</span>', '<span class="bb-l mono">Vulnerabilities</span>', 1),
+    ('<span class="bb-l mono">IP bannies</span>', '<span class="bb-l mono">Banned IPs</span>', 1),
     ('<span class="mon-res mono">1920 × 1080 · 25 i/s</span>', '<span class="mon-res mono">1920 × 1080 · 25 fps</span>', 1),
     ('aria-label="Clap de la prochaine scène"', 'aria-label="Slate for the next scene"', 1),
     ('aria-label="Faire claquer le clap"', 'aria-label="Clap the slate"', 1),
@@ -322,8 +332,8 @@ T = [
     ("'26 MODULES  PoC D’EXPLOITS HISTORIQUES'", "'26 MODULES  HISTORICAL EXPLOIT PoCs'", 1),
     ("'PREUVE > TEST > CI'", "'PROOF > TEST > CI'", 1),
     # ---- Chiffres illustrés, son, vrais écrans ----
-    ("const VL = { scan: 'SCAN DU CODE', found: 'CONSTATS', cvss: 'ÉCHELLE CVSS', bands: ['FAIBLE', 'MOYENNE', 'ÉLEVÉE', 'CRITIQUE'], ip: '1 POINT = 1 ADRESSE IP', lynis: 'INDICE DE DURCISSEMENT LYNIS', before: 'AVANT', after: 'APRÈS', xben: '1 CASE = 0,1 %', rust: '1 BLOC = 100 LIGNES' };",
-     "const VL = { scan: 'CODE SCAN', found: 'FINDINGS', cvss: 'CVSS SCALE', bands: ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], ip: '1 DOT = 1 IP ADDRESS', lynis: 'LYNIS HARDENING INDEX', before: 'BEFORE', after: 'AFTER', xben: '1 CELL = 0.1%', rust: '1 BLOCK = 100 LINES' };", 1),
+    ("const VL = { scan: 'SCAN DU CODE', found: 'CONSTATS', cvss: 'ÉCHELLE CVSS', bands: ['FAIBLE', 'MOYENNE', 'ÉLEVÉE', 'CRITIQUE'], log: 'JOURNAL CROWDSEC · IP D’EXEMPLE (RFC 5737)', lynis: 'INDICE DE DURCISSEMENT LYNIS', before: 'AVANT', after: 'APRÈS', xben: '1 CASE = 0,1 %', rust: '1 TRAIT = 100 LIGNES' };",
+     "const VL = { scan: 'CODE SCAN', found: 'FINDINGS', cvss: 'CVSS SCALE', bands: ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], log: 'CROWDSEC LOG · EXAMPLE IPs (RFC 5737)', lynis: 'LYNIS HARDENING INDEX', before: 'BEFORE', after: 'AFTER', xben: '1 CELL = 0.1%', rust: '1 STROKE = 100 LINES' };", 1),
     ("const DEC = ',', LOC = 'fr-FR', PCT = '\\u202f%';", "const DEC = '.', LOC = 'en-US', PCT = '%';", 1),
     ('aria-label="Son"', 'aria-label="Sound"', 1),
     ('src="img/', 'src="../img/', 3),

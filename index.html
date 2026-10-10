@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGvkiPHjWdXf5Rgynt2wCWYEZEH+u21pt1KsrG8s1kc=' 'sha256-dEeqMjtQkBm3GCsfPmjDwMgh2hTRLm4V8XcpSE+lCok=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGvkiPHjWdXf5Rgynt2wCWYEZEH+u21pt1KsrG8s1kc=' 'sha256-PQHzOtXpKnFtJDeUupqTDs55IcLJNkBAuIpauEX2PIY=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Alessandro Gagliardi · Ingénieur cybersécurité &amp; DevSecOps à Lyon</title>
 <meta name="description" content="Showreel interactif d’Alessandro Gagliardi, ingénieur cybersécurité et DevSecOps à Lyon : pentest, durcissement, réponse à incident, DevSecOps, projets et parcours.">
@@ -271,12 +271,16 @@
     padding-bottom: .2em; font-family: var(--f-display); font-weight: 700; font-size: clamp(1.2rem, 2.5vw, 2.3rem);
     line-height: .95; text-transform: uppercase; font-variation-settings: "wdth" 86; max-width: 12ch;
   }
-  .beat-cap { max-width: 44ch; color: var(--mute); text-wrap: pretty; }
+  .beat-cap { max-width: 42ch; color: var(--mute); font-size: clamp(1rem, 1.2vw, 1.15rem); line-height: 1.5; text-wrap: pretty; }
+  .beat-tag { display: inline-flex; align-items: center; gap: 10px; color: var(--mute); }
+  .beat-tag i { width: 8px; height: 8px; flex: none; rotate: 45deg; background: var(--paper); }
+  .beat[data-tone="red"] .beat-tag i { background: var(--red); }
+  .beat[data-tone="blue"] .beat-tag i { background: var(--blue-2); }
   .dg, .ch { display: inline-block; height: 1em; line-height: 1; overflow: hidden; vertical-align: bottom; }
   .dg-col { display: block; white-space: pre; line-height: 1; }
   .ch.sp { width: .16em; }
   .arr { width: .42em; height: .42em; margin: 0 .08em .2em; align-self: flex-end; fill: currentColor; }
-  .beat-ticks { display: none; }
+  .beat-head, .beat-bar { display: none; }
 
   /* 04 Parcours */
   .career { z-index: 2; padding-block: calc(var(--hud) + 8vh); }
@@ -609,13 +613,23 @@
     .motion .beat { padding-right: 46%; }
     .motion .beat-r { padding-right: var(--gut); padding-left: 46%; }
   }
-  @media (max-width: 899px) { .motion .beat { padding-top: calc(var(--hud) + 27vh); } .motion .beat-ticks { display: none; } }
+  @media (max-width: 899px) { .motion .beat { padding-top: calc(var(--hud) + 27vh); } }
   .motion .beat-r { align-items: flex-end; text-align: right; }
   .motion .beat-r .beat-fig { justify-content: flex-end; }
   .motion .beat-unit { margin-bottom: calc(var(--nfs, 0px) * .17); }
-  .motion .beat-ticks { display: flex; gap: 6px; position: absolute; right: var(--gut); bottom: calc(var(--hud) + 22px); z-index: 2; }
-  .beat-ticks i { width: 20px; height: 2px; background: var(--line); transition: background-color .3s; }
-  .beat-ticks i.on { background: var(--paper); }
+  /* En-tête de la séquence et barre de chapitres : où l'on en est, et un accès direct à chaque chiffre */
+  .motion .beat-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px; position: absolute; z-index: 2;
+    top: calc(var(--hud) + 3vh); left: var(--gut); right: var(--gut); color: var(--mute); pointer-events: none;
+  }
+  .beat-count { display: inline-flex; align-items: baseline; gap: 8px; }
+  .beat-idx { font-family: var(--f-display); font-weight: 800; font-size: clamp(1.8rem, 2.6vw, 2.6rem); line-height: .8; color: var(--paper); font-variation-settings: "wdth" 70; font-variant-numeric: tabular-nums; }
+  .motion .beat-bar { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; position: absolute; z-index: 2; left: var(--gut); right: var(--gut); bottom: calc(var(--hud) + 16px); }
+  .beat-bar button { display: grid; gap: 9px; width: 100%; padding: 6px 0; text-align: left; color: var(--mute); transition: color .3s; }
+  .beat-bar button:hover, .beat-bar .on button { color: var(--paper); }
+  .beat-bar i { display: block; height: 2px; overflow: hidden; background: var(--line); }
+  .beat-bar b { display: block; height: 100%; background: var(--paper); transform-origin: 0 50%; transform: scaleX(var(--f, 0)); }
+  @media (max-width: 899px) { .motion .beat-head, .bb-l { display: none; } .motion .beat-bar { gap: 6px; } }
   .motion .career { height: 100vh; height: 100svh; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: clamp(10px, 2vh, 22px); padding-block: calc(var(--hud) + 3vh) calc(var(--hud) + 2vh); }
   .motion .career-top { margin: 0; }
   .motion .career-date { display: block; }
@@ -877,32 +891,46 @@
     <h2 class="sr-only">Chiffres clés</h2>
     <div class="beats">
       <div class="beat" data-tone="red">
+        <p class="beat-tag mono"><i></i>Audit applicatif</p>
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">45</span><span class="odo" aria-hidden="true">45</span></p><p class="beat-unit">vulnérabilités</p></div>
         <p class="beat-cap">Audit white-box et dynamique d’un SaaS Angular et Laravel, classées OWASP, CWE et CVSS.</p>
       </div>
       <div class="beat beat-r" data-tone="red">
+        <p class="beat-tag mono"><i></i>Élévation de privilèges</p>
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">9,9</span><span class="odo" aria-hidden="true">9,9</span></p><p class="beat-unit">score CVSS</p></div>
         <p class="beat-cap">Élévation de privilèges critique trouvée pendant cet audit, avec des IDOR sur 11 contrôleurs et des secrets exposés.</p>
       </div>
       <div class="beat" data-tone="blue">
+        <p class="beat-tag mono"><i></i>Défense active</p>
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">15&#8239;000</span><span class="odo" aria-hidden="true">15&#8239;000</span></p><p class="beat-unit">adresses IP bannies</p></div>
         <p class="beat-cap">CrowdSec et Fail2ban déployés sur un serveur de production Plesk.</p>
       </div>
       <div class="beat beat-r" data-tone="blue">
+        <p class="beat-tag mono"><i></i>Durcissement serveur</p>
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">de 67 à 77</span><span class="odo" aria-hidden="true">67</span><svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg><span class="odo" aria-hidden="true">77</span></p><p class="beat-unit">score Lynis</p></div>
         <p class="beat-cap">Après audit et durcissement du même serveur&nbsp;: 20 risques priorisés, dont 6 critiques, et 9 CVE noyau corrigées à chaud.</p>
       </div>
       <div class="beat" data-tone="red">
+        <p class="beat-tag mono"><i></i>IA offensive</p>
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">90,1&nbsp;%</span><span class="odo" aria-hidden="true">90,1</span><span class="ch" aria-hidden="true">%</span></p><p class="beat-unit">benchmark XBEN</p></div>
         <p class="beat-cap">Taux de réussite de T3MP3ST, framework offensif piloté par IA auquel j’ai contribué avec 5 pull requests fusionnées.</p>
       </div>
       <div class="beat beat-r" data-tone="paper">
+        <p class="beat-tag mono"><i></i>Blockchain post-quantique</p>
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">31&#8239;400</span><span class="odo" aria-hidden="true">31&#8239;400</span></p><p class="beat-unit">lignes de Rust</p></div>
         <p class="beat-cap">CURS3D, blockchain de couche 1 post-quantique&nbsp;: signatures CRYSTALS-Dilithium, consensus BFT à preuve d’enjeu, machine virtuelle WASM.</p>
       </div>
       <canvas class="stats-viz" aria-hidden="true"></canvas>
     </div>
-    <div class="beat-ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="beat-head" aria-hidden="true"><span class="mono">Chiffres clés</span><span class="beat-count"><b class="beat-idx">01</b><span class="mono">/&nbsp;06</span></span></div>
+    <ol class="beat-bar">
+      <li><button type="button"><span class="bb-l mono">Vulnérabilités</span><i><b></b></i></button></li>
+      <li><button type="button"><span class="bb-l mono">CVSS</span><i><b></b></i></button></li>
+      <li><button type="button"><span class="bb-l mono">IP bannies</span><i><b></b></i></button></li>
+      <li><button type="button"><span class="bb-l mono">Lynis</span><i><b></b></i></button></li>
+      <li><button type="button"><span class="bb-l mono">XBEN</span><i><b></b></i></button></li>
+      <li><button type="button"><span class="bb-l mono">Rust</span><i><b></b></i></button></li>
+    </ol>
   </section>
 
   <section class="scene career" id="parcours" data-scene="Parcours">
@@ -1835,12 +1863,13 @@
     .fromTo(mWords, { opacity: 0.14 }, { opacity: 1, duration: 0.25, stagger: 0.045, ease: 'none' }, '-=0.2');
 
   /* ---------- 03 Chiffres ---------- */
-  const stats = $('#chiffres'), beats = $$('.beat', stats), ticks = $$('.beat-ticks i', stats);
+  const stats = $('#chiffres'), beats = $$('.beat', stats), bars = $$('.beat-bar li', stats), beatIdx = $('.beat-idx', stats);
+  const glFx = { lit: 0 };
   const beatAt = [], rollAt = [];
   let lastBeat = 0;
 
   /* Chiffres illustrés : chaque nombre dessiné à son échelle, sur un seul canvas redessiné au défilement */
-  const VL = { scan: 'SCAN DU CODE', found: 'CONSTATS', cvss: 'ÉCHELLE CVSS', bands: ['FAIBLE', 'MOYENNE', 'ÉLEVÉE', 'CRITIQUE'], ip: '1 POINT = 1 ADRESSE IP', lynis: 'INDICE DE DURCISSEMENT LYNIS', before: 'AVANT', after: 'APRÈS', xben: '1 CASE = 0,1 %', rust: '1 BLOC = 100 LIGNES' };
+  const VL = { scan: 'SCAN DU CODE', found: 'CONSTATS', cvss: 'ÉCHELLE CVSS', bands: ['FAIBLE', 'MOYENNE', 'ÉLEVÉE', 'CRITIQUE'], log: 'JOURNAL CROWDSEC · IP D’EXEMPLE (RFC 5737)', lynis: 'INDICE DE DURCISSEMENT LYNIS', before: 'AVANT', after: 'APRÈS', xben: '1 CASE = 0,1 %', rust: '1 TRAIT = 100 LIGNES' };
   const DEC = ',', LOC = 'fr-FR', PCT = '\u202f%';
   const VC = { red: '#F0503A', blue: '#8F9BFF', paper: '#ECEDEF', ink: '#0C0D10', dim: 'rgba(236,237,239,.14)', dim2: 'rgba(236,237,239,.32)', mute: '#8C909A', line: '#2A2E37' };
   const vizCv = $('.stats-viz', stats), vg = vizCv.getContext('2d'), VZ = { w: 0, h: 0, dpr: 1, l: 1, layers: [] };
@@ -1860,12 +1889,21 @@
   }
   function vizRegion(i) {
     const W = VZ.w, H = VZ.h;
-    if (W >= 900) { const left = beats[i].classList.contains('beat-r'); return { x: left ? W * 0.06 : W * 0.56, y: H * 0.2, w: W * 0.38, h: H * 0.52 }; }
+    if (W >= 900) { const left = beats[i].classList.contains('beat-r'); return { x: left ? W * 0.05 : W * 0.55, y: H * 0.2, w: W * 0.4, h: H * 0.55 }; }
     return { x: 16, y: 72, w: W - 32, h: H * 0.19 };
   }
   function legend(g, R, txt, val) {
     g.font = vfont(VZ.w < 600 ? 10 : 11); g.textAlign = 'left'; g.fillStyle = VC.mute; g.fillText(txt, R.x, R.y + R.h + 24);
     if (val !== undefined) { g.textAlign = 'right'; g.fillStyle = VC.paper; g.fillText(val, R.x + R.w, R.y + R.h + 24); g.textAlign = 'left'; }
+  }
+  // Chaque figure est cadrée comme une image : coins de recadrage et numéro, en haut à gauche
+  function frameMarks(g, R, k) {
+    if (VZ.w < 900) return;
+    const m = 16, l = 12, x0 = R.x - m, y0 = R.y - m - 6, x1 = R.x + R.w + m, y1 = R.y + R.h + m + 30;
+    g.strokeStyle = 'rgba(236,237,239,.28)'; g.lineWidth = 1; g.beginPath();
+    [[x0, y0, 1, 1], [x1, y0, -1, 1], [x0, y1, 1, -1], [x1, y1, -1, -1]].forEach(([x, y, sx, sy]) => { g.moveTo(x + sx * l, y + 0.5 * sy); g.lineTo(x + 0.5 * sx, y + 0.5 * sy); g.lineTo(x + 0.5 * sx, y + sy * l); });
+    g.stroke();
+    g.font = vfont(10); g.textAlign = 'left'; g.fillStyle = VC.mute; g.fillText('FIG. ' + String(k + 1).padStart(2, '0'), x0, y0 - 10);
   }
   function buildScan(R) {
     const pitch = 6, rows = Math.floor(R.h / pitch), [c, g] = mk(R.w, R.h), lines = [];
@@ -1898,7 +1936,12 @@
     const r = Math.min(R.w / 2 - 36, R.h * (VZ.w < 900 ? 0.62 : 0.72)), cx = R.x + R.w / 2, cy = R.y + R.h * 0.5 + r * 0.5;
     const ang = v => Math.PI + (v / 10) * Math.PI, bands = [[0.1, 3.9], [4, 6.9], [7, 8.9], [9, 10]], v = p * 9.9;
     g.lineWidth = Math.max(8, r * 0.06);
-    bands.forEach(([a, b], i) => { g.strokeStyle = i === 3 ? (v >= 9 ? VC.red : 'rgba(240,80,58,.3)') : `rgba(236,237,239,${0.1 + i * 0.08})`; g.beginPath(); g.arc(cx, cy, r, ang(a), ang(b)); g.stroke(); });
+    bands.forEach(([a, b], i) => {
+      const hot = i === 3 && v >= 9;
+      g.strokeStyle = i === 3 ? (hot ? VC.red : 'rgba(240,80,58,.3)') : `rgba(236,237,239,${0.1 + i * 0.08})`;
+      if (hot) { g.shadowColor = 'rgba(240,80,58,.85)'; g.shadowBlur = 22 * Math.min(1, (v - 9) / 0.9); }
+      g.beginPath(); g.arc(cx, cy, r, ang(a), ang(b)); g.stroke(); g.shadowBlur = 0;
+    });
     g.lineWidth = 1; g.strokeStyle = VC.line; g.font = vfont(10); g.textAlign = 'center';
     for (let t = 0; t <= 10; t++) {
       const a = ang(t), c = Math.cos(a), s = Math.sin(a);
@@ -1909,29 +1952,36 @@
     const a = ang(v);
     g.strokeStyle = VC.paper; g.lineWidth = 2; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(a) * (r - 6), cy + Math.sin(a) * (r - 6)); g.stroke();
     g.fillStyle = VC.paper; g.beginPath(); g.arc(cx, cy, 5, 0, TAU); g.fill();
+    if (v >= 9) { g.fillStyle = VC.red; g.shadowColor = 'rgba(240,80,58,.9)'; g.shadowBlur = 14; g.beginPath(); g.arc(cx + Math.cos(a) * (r - 6), cy + Math.sin(a) * (r - 6), 5, 0, TAU); g.fill(); g.shadowBlur = 0; }
     g.lineWidth = 1; g.textAlign = 'left';
     legend(g, { x: cx - r - 30, y: cy - r, w: 2 * r + 60, h: r + 12 }, VL.cvss, v.toFixed(1).replace('.', DEC));
   }
-  function buildDots(R) {
-    // Les 15 000 points tiennent toujours dans la zone : pas entier (net) quand la place le permet, fractionnaire sinon
-    const cols = 150, rows = 100, fitP = Math.min(R.w / cols, R.h / rows), pitch = fitP >= 2 ? Math.floor(fitP) : fitP;
-    const sz = pitch >= 2 ? pitch - 1 : Math.max(0.7, pitch * 0.62), w = cols * pitch, h = rows * pitch;
-    const [base, gb] = mk(w, h), lit = Array.from({ length: 5 }, () => mk(w, h));
-    gb.fillStyle = 'rgba(236,237,239,.13)';
-    lit.forEach(([, g]) => { g.fillStyle = '#5B6CFF'; });
-    for (let i = 0; i < cols * rows; i++) {
-      const x = (i % cols) * pitch, y = Math.floor(i / cols) * pitch;
-      gb.fillRect(x, y, sz, sz);
-      lit[Math.min(4, Math.floor(rnd(i * 1.37 + 11) * 5))][1].fillRect(x, y, sz, sz);
+  // Journal des décisions CrowdSec qui défile au rythme du compteur. Les adresses viennent des plages réservées
+  // à la documentation (RFC 5737) : illustratives, elles ne désignent personne
+  const SCN = ['ssh-bf', 'http-probing', 'http-bad-user-agent', 'http-sensitive-files', 'http-crawl-non_statics', 'ssh-slow-bf', 'http-path-traversal-probing'];
+  const NETS = ['192.0.2.', '198.51.100.', '203.0.113.'];
+  const ipOf = k => NETS[Math.floor(rnd(k * 2.17 + 3) * 3)] + (1 + Math.floor(rnd(k * 5.31 + 1) * 254));
+  function drawBanLog(g, R, p) {
+    const n = Math.round(p * 15000), small = VZ.w < 600, fs = small ? 10 : 12, lh = Math.round(fs * 1.95), top = R.y + fs + 4;
+    const rows = Math.max(3, Math.floor((R.h - lh * 1.4) / lh)), base = g.globalAlpha, tagW = fs * 3.2;
+    const cId = R.x, cTag = small ? R.x : R.x + fs * 5.4, cIp = cTag + tagW + fs, cScn = cIp + fs * 10.6;
+    g.font = vfont(fs); g.textAlign = 'left'; g.fillStyle = VC.mute;
+    g.fillText('$ cscli decisions list --type ban', R.x, top);
+    g.strokeStyle = VC.line; g.beginPath(); g.moveTo(R.x, top + lh * 0.45); g.lineTo(R.x + R.w, top + lh * 0.45); g.stroke();
+    for (let r = 0; r < rows; r++) {
+      const id = n - rows + 1 + r;
+      if (id < 1) continue;
+      const y = top + lh * 1.25 + r * lh, newest = r === rows - 1;
+      g.globalAlpha = base * (0.28 + 0.72 * (r + 1) / rows);
+      if (!small) { g.fillStyle = VC.mute; g.textAlign = 'left'; g.fillText('#' + String(id).padStart(5, '0'), cId, y); }
+      g.fillStyle = VC.red; g.fillRect(cTag, y - fs + 1, tagW, fs + 4);
+      g.fillStyle = VC.ink; g.textAlign = 'center'; g.font = vfont(fs, 600); g.fillText('BAN', cTag + tagW / 2, y + 1); g.font = vfont(fs);
+      g.textAlign = 'left'; g.fillStyle = newest ? VC.paper : 'rgba(236,237,239,.85)'; g.fillText(ipOf(id), cIp, y);
+      g.fillStyle = VC.mute; g.fillText(SCN[Math.floor(rnd(id * 1.71 + 9) * SCN.length)], cScn, y);
+      if (!small) { g.textAlign = 'right'; g.fillText('4h', R.x + R.w, y); }
     }
-    return { base, lit: lit.map(l => l[0]), w, h };
-  }
-  function drawDots(g, R, L, p) {
-    const x = R.x + (R.w - L.w) / 2, y = R.y + (R.h - L.h) / 2, f = p * 5, full = Math.floor(f);
-    g.drawImage(L.base, x, y, L.w, L.h);
-    for (let k = 0; k < full && k < 5; k++) g.drawImage(L.lit[k], x, y, L.w, L.h);
-    if (full < 5 && f > full) { g.save(); g.beginPath(); g.rect(x, y, L.w, L.h * (f - full)); g.clip(); g.drawImage(L.lit[full], x, y, L.w, L.h); g.restore(); }
-    legend(g, { x: R.x, y, w: R.w, h: L.h }, VL.ip, Math.round(p * 15000).toLocaleString(LOC));
+    g.globalAlpha = base; g.textAlign = 'left';
+    legend(g, R, VL.log, n.toLocaleString(LOC));
   }
   function drawGraph(g, R, p) {
     const lo = 60, hi = 80, yv = v => R.y + R.h * (1 - (v - lo) / (hi - lo)), ax = R.x + R.w * 0.14, bx = R.x + R.w * 0.92, ay = yv(67), by = yv(77);
@@ -1977,7 +2027,40 @@
     g.clip(); g.drawImage(L.fill, x, y, L.w, L.h); g.restore();
     legend(g, { x: R.x, y, w: R.w, h: L.h }, label, fmt(n));
   }
-  const layerFor = (i, R) => VZ.layers[i] || (VZ.layers[i] = i === 0 ? buildScan(R) : i === 2 ? buildDots(R) : i === 4 ? buildGrid(R, 40, 25, 901, VC.red, false) : i === 5 ? buildGrid(R, 20, 16, 314, 'rgba(236,237,239,.7)', true) : {});
+  // 31 400 lignes de Rust en minimap d'éditeur : 314 traits, un par centaine de lignes, indentés et colorés comme du code
+  function buildMinimap(R) {
+    const N = 314, cols = VZ.w < 600 ? 4 : 6, per = Math.ceil(N / cols), gap = Math.max(10, R.w * 0.03);
+    const cw = (R.w - gap * (cols - 1)) / cols, lh = R.h / per, bh = Math.max(1.5, Math.min(4, lh * 0.5));
+    const [dim, gd] = mk(R.w, R.h), [full, gf] = mk(R.w, R.h);
+    gd.fillStyle = 'rgba(236,237,239,.07)';
+    let depth = 0;
+    for (let i = 0; i < N; i++) {
+      const c = Math.floor(i / per), r = i % per, x0 = c * (cw + gap), y = r * lh + (lh - bh) / 2;
+      const q = rnd(i * 3.7 + 2);
+      depth = q < 0.18 ? Math.min(3, depth + 1) : q > 0.8 ? Math.max(0, depth - 1) : depth;
+      let x = x0 + depth * cw * 0.09, len = (0.22 + 0.68 * rnd(i * 1.9 + 7)) * (cw - depth * cw * 0.09);
+      gd.fillRect(x, y, len, bh);
+      const parts = 1 + Math.floor(rnd(i * 5.3) * 3);
+      for (let k = 0; k < parts && len > 4; k++) {
+        const pl = k === parts - 1 ? len : len * (0.2 + 0.4 * rnd(i * 7 + k)), t = rnd(i * 11 + k * 3);
+        gf.fillStyle = t < 0.14 ? VC.red : t < 0.26 ? VC.blue : t < 0.34 ? '#4CC38A' : 'rgba(236,237,239,.62)';
+        gf.fillRect(x, y, Math.max(2, pl - 3), bh);
+        x += pl; len -= pl;
+      }
+    }
+    return { dim, full, per, cols, cw, gap, lh, N };
+  }
+  function drawMinimap(g, R, L, p) {
+    const n = Math.round(p * L.N), doneCols = Math.floor(n / L.per), rest = n % L.per;
+    g.drawImage(L.dim, R.x, R.y, R.w, R.h);
+    g.save(); g.beginPath();
+    if (doneCols) g.rect(R.x, R.y, doneCols * (L.cw + L.gap), R.h);
+    if (rest) g.rect(R.x + doneCols * (L.cw + L.gap), R.y, L.cw, rest * L.lh);
+    g.clip(); g.drawImage(L.full, R.x, R.y, R.w, R.h); g.restore();
+    if (n < L.N) { g.fillStyle = VC.paper; g.fillRect(R.x + doneCols * (L.cw + L.gap), R.y + rest * L.lh, L.cw, 1); }
+    legend(g, R, VL.rust, (n * 100).toLocaleString(LOC));
+  }
+  const layerFor = (i, R) => VZ.layers[i] || (VZ.layers[i] = i === 0 ? buildScan(R) : i === 4 ? buildGrid(R, 40, 25, 901, VC.red, false) : i === 5 ? buildMinimap(R) : {});
   function drawStats() {
     if (!VZ.w) vizSize();
     if (!VZ.w || !VZ.h || !rollAt.length) return;
@@ -1986,6 +2069,7 @@
     for (let i = 0; i < rollAt.length; i++) if (t >= rollAt[i]) k = i;
     const p = gsap.utils.clamp(0, 1, (t - rollAt[k]) / 1.6), e = p >= 1 ? 1 : 1 - Math.pow(1 - p, 3);
     const fade = k + 1 < beatAt.length ? gsap.utils.clamp(0, 1, (t - beatAt[k + 1]) / 0.6) : 0;
+    glFx.lit = k === 2 ? e * (1 - fade) : 0;  // le fond de 15 000 points s'allume avec le compteur d'adresses bannies
     const key = k + ':' + Math.round(e * 20000) + ':' + Math.round(fade * 1000);  // plus fin que 1/15 000 : chaque point compte
     if (key === vizKey) return;
     vizKey = key;
@@ -1993,22 +2077,28 @@
     vg.clearRect(0, 0, VZ.w, VZ.h);
     vg.globalAlpha = 1 - fade;
     const R = vizRegion(k), L = layerFor(k, R);
+    frameMarks(vg, R, k);
     if (k === 0) drawScan(vg, R, L, e);
     else if (k === 1) drawGauge(vg, R, e);
-    else if (k === 2) drawDots(vg, R, L, e);
+    else if (k === 2) drawBanLog(vg, R, e);
     else if (k === 3) drawGraph(vg, R, e);
     else if (k === 4) drawGrid(vg, R, L, e, VL.xben, n => (n / 10).toFixed(1).replace('.', DEC) + PCT);
-    else drawGrid(vg, R, L, e, VL.rust, n => (n * 100).toLocaleString(LOC));
+    else drawMinimap(vg, R, L, e);
     vg.globalAlpha = 1;
   }
 
   const sTL = gsap.timeline({
     scrollTrigger: { trigger: stats, start: 'top top', end: () => '+=' + beats.length * 0.8 * VH, pin: true, scrub: 0.7, anticipatePin: 1, invalidateOnRefresh: true },
     onUpdate: () => {
-      const t = sTL.time();
+      const t = sTL.time(), D = sTL.duration();
       let idx = 0;
       beatAt.forEach((bt, i) => { if (t >= bt - 0.05) idx = i; });
-      ticks.forEach((tk, i) => tk.classList.toggle('on', i <= idx));
+      bars.forEach((li, i) => {
+        const a = beatAt[i], b = i + 1 < beatAt.length ? beatAt[i + 1] : D;
+        li.style.setProperty('--f', gsap.utils.clamp(0, 1, (t - a) / (b - a)).toFixed(3));
+        li.classList.toggle('on', i <= idx);
+      });
+      if (idx !== lastBeat) beatIdx.textContent = String(idx + 1).padStart(2, '0');
       if (idx > lastBeat) sfx('roll');
       lastBeat = idx;
       drawStats();
@@ -2021,12 +2111,21 @@
         .fromTo(b, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01 });
     }
     rollAt.push(i ? sTL.duration() - 0.01 : 0);
-    sTL.fromTo($('.beat-num', b), { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.9, ease: 'expo.out' }, i ? '<' : 0)
+    // Le nombre entre écrasé en largeur depuis son bord, pendant que ses chiffres roulent
+    const edge = b.classList.contains('beat-r') ? '100% 100%' : '0% 100%';
+    sTL.fromTo($('.beat-num', b), { yPercent: 30, scaleX: 1.3, opacity: 0, transformOrigin: edge }, { yPercent: 0, scaleX: 1, opacity: 1, duration: 0.9, ease: 'expo.out' }, i ? '<' : 0)
+      .fromTo($('.beat-tag', b), { x: b.classList.contains('beat-r') ? 24 : -24, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, '<')
       .fromTo($$('.dg-col', b), { yPercent: 0 }, { yPercent: (k, el) => -(Number(el.dataset.to) / 20) * 100, duration: 1.3, ease: 'power3.out', stagger: 0.06 }, '<')
       .fromTo($$('.beat-unit, .beat-cap', b), { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08, ease: 'power3.out' }, '<+0.25')
       .to({}, { duration: 0.9 });
   });
-  ticks[0].classList.add('on');
+  bars[0].classList.add('on');
+  // Barre de chapitres : un clic emmène au chiffre, posé (compteur déroulé)
+  bars.forEach((li, i) => $('button', li).addEventListener('click', () => {
+    const tr = sTL.scrollTrigger, T = Math.min(sTL.duration(), rollAt[i] + 1.5);
+    setPlaying(false);
+    goTo(tr.start + (T / sTL.duration()) * (tr.end - tr.start), 1.2);
+  }));
 
   /* ---------- 04 Parcours ---------- */
   const view = $('.nle-view', career), dateEl = $('.career-date', career), monName = $('.mon-name', career), monYear = $('.mon-year', career);
@@ -2633,7 +2732,7 @@
       precision highp float;
       attribute vec4 aA; attribute vec4 aB; attribute vec3 cA; attribute vec3 cB; attribute float aR;
       uniform mat3 uRA, uRB; uniform vec3 uOA, uOB; uniform vec2 uW, uAlpha, uScale, uMouse, uWave, uUni;
-      uniform float uMix, uTime, uAgit, uAspect, uRepel, uDpr, uDens;
+      uniform float uMix, uTime, uAgit, uAspect, uRepel, uDpr, uDens, uLit, uGridW;
       uniform mat4 uProj;
       varying vec3 vC; varying float vA;
       vec3 flow(vec4 p, float w, float wave) {
@@ -2655,9 +2754,12 @@
         mv.xy += normalize(d + 1e-4) * f * (-mv.z) * 0.09;
         gl_Position = uProj * mv;
         float dist = -mv.z;
-        gl_PointSize = dist < 0.4 ? 0.0 : min(14.0, 2.3 * uDpr * mix(uScale.x, uScale.y, t) * mix(0.45 + aR, 0.95, uni) * ${CAMZ.toFixed(1)} / dist);
         vC = mix(cA, cB, t);
-        vA = uDens * mix(uAlpha.x, uAlpha.y, t) * (1.0 - mix(0.35, 0.05, uni) * (0.5 + 0.5 * sin(uTime * 1.7 + aR * 50.0))) * clamp(1.0 - (dist - 6.0) / 7.0, 0.2, 1.0);
+        // Adresses bannies : une part uLit des points de l'océan s'allume (les 45 points rouges des vulnérabilités restent rouges)
+        float lit = step(aR, uLit) * uGridW * step(0.6, vC.b);
+        gl_PointSize = dist < 0.4 ? 0.0 : min(14.0, 2.3 * uDpr * mix(uScale.x, uScale.y, t) * mix(0.45 + aR, 0.95, uni) * (1.0 + 0.45 * lit) * ${CAMZ.toFixed(1)} / dist);
+        vC = mix(vC, vec3(0.33, 0.4, 1.0), lit);
+        vA = uDens * mix(uAlpha.x, uAlpha.y, t) * (1.0 - mix(0.35, 0.05, uni) * (0.5 + 0.5 * sin(uTime * 1.7 + aR * 50.0))) * clamp(1.0 - (dist - 6.0) / 7.0, 0.2, 1.0) * (1.0 + 0.85 * lit);
       }`;
     const FS = `
       precision mediump float;
@@ -2676,7 +2778,7 @@
     } catch (e) { console.warn('Calque 3D désactivé :', e.message); return; }
     gl.useProgram(prog);
     const U = {};
-    ['uRA', 'uRB', 'uOA', 'uOB', 'uW', 'uWave', 'uUni', 'uAlpha', 'uScale', 'uMouse', 'uMix', 'uTime', 'uAgit', 'uAspect', 'uRepel', 'uDpr', 'uDens', 'uProj'].forEach(n => { U[n] = gl.getUniformLocation(prog, n); });
+    ['uRA', 'uRB', 'uOA', 'uOB', 'uW', 'uWave', 'uUni', 'uAlpha', 'uScale', 'uMouse', 'uMix', 'uTime', 'uAgit', 'uAspect', 'uRepel', 'uDpr', 'uDens', 'uLit', 'uGridW', 'uProj'].forEach(n => { U[n] = gl.getUniformLocation(prog, n); });
     const L = {};
     ['aA', 'aB', 'cA', 'cB', 'aR'].forEach(n => { L[n] = gl.getAttribLocation(prog, n); gl.enableVertexAttribArray(L[n]); });
     const rb = gl.createBuffer(), rr = new Float32Array(N);
@@ -2854,6 +2956,7 @@
       gl.uniform2f(U.uMouse, ptr.on ? ptr.x : 9, ptr.on ? ptr.y : 9);
       gl.uniform1f(U.uRepel, (A.repel + (B.repel - A.repel) * m) * ptr.k);
       gl.uniform1f(U.uMix, m); gl.uniform1f(U.uTime, time); gl.uniform1f(U.uAgit, agit);
+      gl.uniform1f(U.uLit, glFx.lit); gl.uniform1f(U.uGridW, (a === 'grid' ? 1 - m : 0) + (b === 'grid' ? m : 0));
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.POINTS, 0, drawN);
     }
