@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGvkiPHjWdXf5Rgynt2wCWYEZEH+u21pt1KsrG8s1kc=' 'sha256-TkYW7RURtuZD2QI75LEYxpCetK143LgccQA3IJP0i2I=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGvkiPHjWdXf5Rgynt2wCWYEZEH+u21pt1KsrG8s1kc=' 'sha256-gQL9d0LO2f7k5R/8cQkrcZfr+4Gxa9PJQQO1w9lP+AI=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Alessandro Gagliardi · Ingénieur cybersécurité &amp; DevSecOps à Lyon</title>
 <meta name="description" content="Showreel interactif d’Alessandro Gagliardi, ingénieur cybersécurité et DevSecOps à Lyon : pentest, durcissement, réponse à incident, DevSecOps, projets et parcours.">
@@ -22,7 +22,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfilePage","url":"https://pazificateur69.github.io/showreel/","inLanguage":"fr","mainEntity":{"@type":"Person","name":"Alessandro Gagliardi","jobTitle":"Ingénieur cybersécurité et DevSecOps","description":"Pentest, audit applicatif, durcissement, réponse à incident et DevSecOps sur des serveurs de production.","email":"mailto:alessandro.gagliardi225145@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Villeurbanne","addressRegion":"Auvergne-Rhône-Alpes","addressCountry":"FR"},"alumniOf":{"@type":"CollegeOrUniversity","name":"Guardia Cybersecurity School"},"knowsLanguage":["fr","en","it","ru"],"knowsAbout":["Test d’intrusion","DevSecOps","Durcissement Linux","Réponse à incident","OWASP Top 10","MITRE ATT&CK","EBIOS Risk Manager","Sécurité des LLM"],"sameAs":["https://github.com/Pazificateur69","https://www.linkedin.com/in/alessandro-cyber/","https://pazificateur69.github.io/"]}}
 </script>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230C0D10'/%3E%3Crect x='10' y='10' width='12' height='12' transform='rotate(45 16 16)' fill='%23F0503A'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%230C0D10'/%3E%3Crect%20x='10'%20y='10'%20width='12'%20height='12'%20transform='rotate(45%2016%2016)'%20fill='%23F0503A'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&amp;family=Instrument+Sans:wdth,wght@75..100,400..700&amp;family=Martian+Mono:wdth,wght@75..112.5,300..700&amp;display=swap">
@@ -458,7 +458,7 @@
   .motion .band-track { display: flex; width: max-content; will-change: transform; }
   .motion .band-items { flex-wrap: nowrap; }
   /* Mots en creux : contour peint sous un remplissage d'encre, qui cache les tracés superposés de la fonte variable */
-  .motion .band-items li:nth-child(even) { color: var(--ink); -webkit-text-stroke: 2px var(--paper); paint-order: stroke fill; }
+  .motion .band-items li:nth-child(even) { color: var(--ink); -webkit-text-stroke: 2px var(--paper); }
   .motion .band-view { -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
   @media (max-width: 700px) {
     .band { grid-template-columns: 1fr; }
@@ -829,7 +829,7 @@
     <dl class="kb-list">
       <div><dt><kbd>Espace</kbd></dt><dd><b>Lecture</b> et pause du showreel</dd></div>
       <div><dt><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></dt><dd><b>Arrière, pause, avant.</b> Un nouvel appui sur J ou L accélère, comme dans un logiciel de montage.</dd></div>
-      <div><dt><kbd aria-label="Flèche gauche">←</kbd><kbd aria-label="Flèche droite">→</kbd></dt><dd><b>Scène</b> précédente ou suivante</dd></div>
+      <div><dt><kbd><span class="sr-only">Flèche gauche</span><span aria-hidden="true">←</span></kbd><kbd><span class="sr-only">Flèche droite</span><span aria-hidden="true">→</span></kbd></dt><dd><b>Scène</b> précédente ou suivante</dd></div>
       <div><dt><kbd>M</kbd></dt><dd><b>Son</b> activé ou coupé</dd></div>
       <div><dt><kbd>?</kbd></dt><dd><b>Cette aide</b>, à ouvrir ou fermer</dd></div>
     </dl>
@@ -871,30 +871,30 @@
   <section class="scene stats" id="chiffres" data-scene="Chiffres">
     <h2 class="sr-only">Chiffres clés</h2>
     <div class="beats">
-      <article class="beat" data-tone="red">
+      <div class="beat" data-tone="red">
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">45</span><span class="odo" aria-hidden="true">45</span></p><p class="beat-unit">vulnérabilités</p></div>
         <p class="beat-cap">Audit white-box et dynamique d’un SaaS Angular et Laravel, classées OWASP, CWE et CVSS.</p>
-      </article>
-      <article class="beat beat-r" data-tone="red">
+      </div>
+      <div class="beat beat-r" data-tone="red">
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">9,9</span><span class="odo" aria-hidden="true">9,9</span></p><p class="beat-unit">score CVSS</p></div>
         <p class="beat-cap">Élévation de privilèges critique trouvée pendant cet audit, avec des IDOR sur 11 contrôleurs et des secrets exposés.</p>
-      </article>
-      <article class="beat" data-tone="blue">
+      </div>
+      <div class="beat" data-tone="blue">
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">15&#8239;000</span><span class="odo" aria-hidden="true">15&#8239;000</span></p><p class="beat-unit">adresses IP bannies</p></div>
         <p class="beat-cap">CrowdSec et Fail2ban déployés sur un serveur de production Plesk.</p>
-      </article>
-      <article class="beat beat-r" data-tone="blue">
+      </div>
+      <div class="beat beat-r" data-tone="blue">
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">de 67 à 77</span><span class="odo" aria-hidden="true">67</span><svg class="arr" aria-hidden="true"><use href="#i-arrow"/></svg><span class="odo" aria-hidden="true">77</span></p><p class="beat-unit">score Lynis</p></div>
         <p class="beat-cap">Après audit et durcissement du même serveur&nbsp;: 20 risques priorisés, dont 6 critiques, et 9 CVE noyau corrigées à chaud.</p>
-      </article>
-      <article class="beat" data-tone="red">
+      </div>
+      <div class="beat" data-tone="red">
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">90,1&nbsp;%</span><span class="odo" aria-hidden="true">90,1</span><span class="ch" aria-hidden="true">%</span></p><p class="beat-unit">benchmark XBEN</p></div>
         <p class="beat-cap">Taux de réussite de T3MP3ST, framework offensif piloté par IA auquel j’ai contribué avec 5 pull requests fusionnées.</p>
-      </article>
-      <article class="beat beat-r" data-tone="paper">
+      </div>
+      <div class="beat beat-r" data-tone="paper">
         <div class="beat-fig"><p class="beat-num"><span class="sr-only">31&#8239;400</span><span class="odo" aria-hidden="true">31&#8239;400</span></p><p class="beat-unit">lignes de Rust</p></div>
         <p class="beat-cap">CURS3D, blockchain de couche 1 post-quantique&nbsp;: signatures CRYSTALS-Dilithium, consensus BFT à preuve d’enjeu, machine virtuelle WASM.</p>
-      </article>
+      </div>
       <canvas class="stats-viz" aria-hidden="true"></canvas>
     </div>
     <div class="beat-ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -2159,7 +2159,10 @@
 
   /* ---------- 07 Arsenal ---------- */
   const bands = $$('.band').map((b, i) => {
-    const track = $('.band-track', b), ul = $('.band-items', b), clone = ul.cloneNode(true);
+    const track = $('.band-track', b), ul = $('.band-items', b);
+    // Contour peint sous le remplissage (posé ici : le validateur CSS ne connaît pas encore paint-order)
+    $$('li:nth-child(even)', ul).forEach(li => { li.style.paintOrder = 'stroke fill'; });
+    const clone = ul.cloneNode(true);
     clone.setAttribute('aria-hidden', 'true');
     track.append(clone);
     const o = { track, ul, x: 0, w: 0, dir: i % 2 ? 1 : -1, v: 26 + (i % 3) * 9, slow: 1, hover: false };
