@@ -39,14 +39,14 @@ def with_flag(html, text):
     return new
 
 
-def with_csp(html):
-    """Remplace la liste d'empreintes de script-src par celles des scripts en ligne exécutables de la page."""
+def with_csp(html, extra=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net', expected=2):
+    """Remplace la directive script-src par les empreintes des scripts en ligne exécutables de la page, suivies des sources tierces."""
     hashes = []
     for m in re.finditer(r'<script(?![^>]*\bsrc=)(?![^>]*application/ld\+json)[^>]*>(.*?)</script>', html, re.S):
         hashes.append("'sha256-" + base64.b64encode(hashlib.sha256(m.group(1).encode('utf-8')).digest()).decode() + "'")
-    new, n = re.subn(r"(<meta http-equiv=\"Content-Security-Policy\" content=\"[^\"]*?script-src )(.*?)( https://cdnjs\.cloudflare\.com)",
-                     lambda m: m.group(1) + ' '.join(hashes) + m.group(3), html, count=1)
-    assert n == 1 and len(hashes) == 2, f'CSP : {n} balise(s), {len(hashes)} script(s) en ligne'
+    new, n = re.subn(r'(<meta http-equiv="Content-Security-Policy" content="[^"]*?script-src )[^;"]*',
+                     lambda m: m.group(1) + ' '.join(hashes) + extra, html, count=1)
+    assert n == 1 and len(hashes) == expected, f'CSP : {n} balise(s), {len(hashes)} script(s) en ligne'
     return new
 
 # (texte français, texte anglais, nombre d'occurrences attendu)
@@ -289,9 +289,17 @@ T = [
     ('<span>Copier l’adresse</span>', '<span>Copy address</span>', 1),
     ('<span>Télécharger le CV</span>', '<span>Download CV</span>', 1),
     ('<p class="fin-word">Fin</p>', '<p class="fin-word">The End</p>', 1),
-    ('font-size: clamp(4rem, 13vw, 12rem); line-height: .8; text-transform: uppercase; font-variation-settings: "wdth" 70;',
-     'font-size: clamp(2.6rem, 8.5vw, 8rem); line-height: .8; text-transform: uppercase; font-variation-settings: "wdth" 70;', 1),
+    ('font-size: clamp(4rem, 13vw, 12rem); line-height: .8; text-transform: uppercase; font-variation-settings: "wdth" var(--w, 70);',
+     'font-size: clamp(2.6rem, 8.5vw, 8rem); line-height: .8; text-transform: uppercase; font-variation-settings: "wdth" var(--w, 70);', 1),
     ('<span>Rembobiner</span>', '<span>Rewind</span>', 1),
+    # ---- Clap et pied de page ----
+    ('aria-label="Clap de la prochaine scène"', 'aria-label="Slate for the next scene"', 1),
+    ('aria-label="Faire claquer le clap"', 'aria-label="Clap the slate"', 1),
+    ('<div><dt>Scène</dt><dd>10 · La suite</dd></div>', '<div><dt>Scene</dt><dd>10 · The sequel</dd></div>', 1),
+    ('<div><dt>Prise</dt><dd>01</dd></div>', '<div><dt>Take</dt><dd>01</dd></div>', 1),
+    ('<div><dt>Lieu</dt><dd>Lyon, France</dd></div>', '<div><dt>Location</dt><dd>Lyon, France</dd></div>', 1),
+    ('<p class="fin-thanks mono">Merci d’avoir regardé</p>', '<p class="fin-thanks mono">Thanks for watching</p>', 1),
+    ('<span>Sans cookie ni mesure d’audience</span>', '<span>No cookies, no analytics</span>', 1),
     # ---- Textes du script ----
     ("['Janv.', 'Févr.', 'Mars', 'Avr.', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.']",
      "['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.']", 1),
@@ -331,6 +339,22 @@ T = [
     ("'Un flag est chiffré en XOR juste ici :\\n'", "'A flag is XOR-encrypted right here:\\n'", 1),
     ("'\\nIndice : la clé est le nom de l’outil qui transforme une faille prouvée en test.\\nEssaie : dechiffrer(\"la-clé\")'",
      "'\\nHint: the key is the name of the tool that turns a proven exploit into a test.\\nTry: decrypt(\"the-key\")'", 1),
+    # ---- Table de montage : curseur, raccourcis, barre de lecture ----
+    ('aria-label="Raccourcis clavier"', 'aria-label="Keyboard shortcuts"', 1),
+    ('<span>Raccourcis clavier</span>', '<span>Keyboard shortcuts</span>', 1),
+    ('Fermer&ensp;·&ensp;Échap', 'Close&ensp;·&ensp;Esc', 1),
+    ('id="kb-title">Table de montage</p>', 'id="kb-title">Edit bay</p>', 1),
+    ('<kbd>Espace</kbd></dt><dd><b>Lecture</b> et pause du showreel</dd>', '<kbd>Space</kbd></dt><dd><b>Play</b> and pause the showreel</dd>', 1),
+    ('<dd><b>Arrière, pause, avant.</b> Un nouvel appui sur J ou L accélère, comme dans un logiciel de montage.</dd>',
+     '<dd><b>Reverse, pause, forward.</b> Press J or L again to speed up, just like in an editing suite.</dd>', 1),
+    ('<kbd aria-label="Flèche gauche">←</kbd><kbd aria-label="Flèche droite">→</kbd></dt><dd><b>Scène</b> précédente ou suivante</dd>',
+     '<kbd aria-label="Left arrow">←</kbd><kbd aria-label="Right arrow">→</kbd></dt><dd><b>Previous</b> or next scene</dd>', 1),
+    ('<dd><b>Son</b> activé ou coupé</dd>', '<dd><b>Sound</b> on or off</dd>', 1),
+    ('<dd><b>Cette aide</b>, à ouvrir ou fermer</dd>', '<dd><b>This help</b>, open or close</dd>', 1),
+    ('Saisissez la barre de lecture pour parcourir le film.', 'Grab the playback bar to scrub through the film.', 1),
+    ("const CUR = { play: 'Lire', pause: 'Pause', open: 'Ouvrir', close: 'Fermer', ext: 'Voir', dl: 'Télécharger', copy: 'Copier', mail: 'Écrire', go: 'Aller', drag: 'Glisser', rew: 'Rembobiner', snd: 'Son', keys: 'Raccourcis', lang: 'English', clap: 'Clap' };",
+     "const CUR = { play: 'Play', pause: 'Pause', open: 'Open', close: 'Close', ext: 'View', dl: 'Download', copy: 'Copy', mail: 'Email', go: 'Go', drag: 'Drag', rew: 'Rewind', snd: 'Sound', keys: 'Shortcuts', lang: 'Français', clap: 'Clap' };", 1),
+    ("PAUSE_T = 'En pause · Alessandro Gagliardi';", "PAUSE_T = 'Paused · Alessandro Gagliardi';", 1),
 ]
 
 
@@ -354,6 +378,10 @@ def main():
     out.parent.mkdir(exist_ok=True)
     out.write_text(s, encoding='utf-8')
     print(f'index.html : empreintes CSP à jour\n{out.relative_to(ROOT)} écrit ({len(T)} traductions appliquées)')
+    # Page 404 bilingue, servie par GitHub Pages pour tout chemin manquant sous /showreel/ : pas de script tiers
+    nf = ROOT / '404.html'
+    nf.write_text(with_csp(nf.read_text(encoding='utf-8'), extra='', expected=2), encoding='utf-8')
+    print('404.html : empreintes CSP à jour')
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-DpaQGSviRphdxwBAtjUbHNMQjUQb0XAJmbyY3Bo3iWQ=' 'sha256-DtdQu1oMbH/pvBdqmq3NEVC+/5rT6MuCj2Rq2/4Wq1Y=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGvkiPHjWdXf5Rgynt2wCWYEZEH+u21pt1KsrG8s1kc=' 'sha256-/UUTaEVZ3NmRZzYjamcRxL4VS5CcxCLL7BWxqCZfnnM=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Alessandro Gagliardi · Cybersecurity &amp; DevSecOps Engineer in Lyon</title>
 <meta name="description" content="Interactive showreel of Alessandro Gagliardi, cybersecurity and DevSecOps engineer in Lyon: penetration testing, hardening, incident response, DevSecOps, projects and career.">
@@ -31,7 +31,11 @@
     var d = document.documentElement;
     try {
       if (/[?&](rapide|quick)\b/.test(location.search)) { d.classList.add('quick'); return; }
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && innerHeight >= 480) d.classList.add('motion', 'intro');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && innerHeight >= 480) {
+        d.classList.add('motion', 'intro');
+        // Déjà vu dans cette session, ou lien direct vers une scène : on saute le compte à rebours
+        if (location.hash.length > 1 || sessionStorage.getItem('reel-vu')) d.classList.add('revisit');
+      }
     } catch (e) {}
   })();
 </script>
@@ -475,27 +479,91 @@
     .cr-list div { grid-template-columns: 1fr; gap: 4px; text-align: center; }
     .cr-list dt { text-align: center; }
   }
-  .contact { min-height: 100vh; min-height: 100svh; display: grid; align-content: center; gap: clamp(28px, 5vh, 48px); padding: calc(var(--hud) + 6vh) var(--gut); }
+  /* Contact : le clap de la prochaine scène */
+  .contact {
+    min-height: 100vh; min-height: 100svh; display: grid; align-content: center;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); grid-template-areas: "main slate" "links links";
+    gap: clamp(32px, 5vh, 64px) clamp(32px, 5vw, 96px); padding: calc(var(--hud) + 5vh) var(--gut) calc(var(--hud) + 4vh);
+  }
+  .ct-main { grid-area: main; display: grid; align-content: end; gap: clamp(22px, 3.8vh, 40px); }
   .contact-title {
-    max-width: 12ch; font-family: var(--f-display); font-weight: 850; font-size: clamp(2.8rem, 9.5vw, 10rem); line-height: .84;
+    max-width: 12ch; font-family: var(--f-display); font-weight: 850; font-size: clamp(2.8rem, 6.8vw, 8rem); line-height: .84;
     text-transform: uppercase; letter-spacing: -.015em; font-variation-settings: "wdth" var(--w, 76); text-wrap: balance;
   }
   .contact-title em { font-style: normal; color: var(--red); }
-  .contact-mail { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 14px; }
-  .mail { margin-right: 10px; padding: 14px 0; border-bottom: 1px solid var(--line); font-family: var(--f-mono); font-size: clamp(.78rem, 1.6vw, 1.05rem); letter-spacing: .02em; user-select: all; overflow-wrap: anywhere; }
-  @media (max-width: 420px) { .mail { font-size: .74rem; letter-spacing: 0; font-stretch: 87.5%; } }
-  .contact-links { display: flex; flex-wrap: wrap; gap: 12px 28px; }
-  .contact-links a {
-    display: inline-flex; align-items: center; gap: 8px; padding-bottom: 3px; font-weight: 600; text-decoration: none;
-    background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat; transition: background-size .45s var(--ease);
+  .ct-mail { position: relative; display: grid; gap: 18px; }
+  .mail {
+    padding-bottom: 14px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; user-select: all;
+    font-family: var(--f-display); font-weight: 700; font-size: clamp(1.05rem, 2.1vw, 2rem); line-height: 1.1; letter-spacing: -.005em; font-variation-settings: "wdth" 82;
   }
-  .contact-links a:hover { background-size: 100% 1px; }
-  .copy-status { min-height: 1.4em; color: var(--mute); font-size: .9rem; }
-  .fin { position: relative; height: 100vh; height: 100svh; display: grid; place-content: center; justify-items: center; gap: 26px; overflow: hidden; }
-  .fin-disc { position: absolute; left: 50%; top: 50%; width: min(62vmin, 560px); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: var(--ink-3); border: 1px solid rgba(236, 237, 239, .45); pointer-events: none; }
-  .motion .fin-disc { will-change: transform; }
-  .fin-word { position: relative; z-index: 1; font-family: var(--f-display); font-weight: 850; font-size: clamp(2.6rem, 8.5vw, 8rem); line-height: .8; text-transform: uppercase; font-variation-settings: "wdth" 70; }
-  .fin .btn { z-index: 1; }
+  .contact-mail { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .copy-status { position: absolute; left: 0; top: 100%; margin-top: 10px; color: var(--mute); font-size: .9rem; }
+  .slate { grid-area: slate; align-self: end; justify-self: end; position: relative; width: 100%; max-width: 540px; margin: 0; --flash: 0; }
+  .slate::after { content: ""; position: absolute; inset: 0; background: var(--paper); opacity: var(--flash); pointer-events: none; }
+  .slate-sticks { position: relative; display: block; width: 100%; height: clamp(52px, 7vh, 72px); }
+  .stick { position: absolute; left: 0; right: 0; height: 50%; border: 1px solid var(--paper); }
+  .stick-top { top: 0; transform-origin: 7px 100%; background: repeating-linear-gradient(58deg, var(--paper) 0 22px, var(--ink) 22px 44px); }
+  .stick-base { bottom: 0; border-top: 0; background: repeating-linear-gradient(-58deg, var(--paper) 0 22px, var(--ink) 22px 44px); }
+  .slate-sticks::after { content: ""; position: absolute; left: 0; top: 50%; width: 11px; height: 11px; margin: -6px 0 0 -5px; background: var(--red); rotate: 45deg; }
+  .slate-body { border: 1px solid var(--paper); border-top: 0; background-color: var(--ink-2); background-image: var(--grain); }
+  .slate-tc { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+  .slate-tc-l { color: var(--mute); }
+  .slate-tc-v {
+    font-family: var(--f-mono); font-weight: 500; font-size: clamp(1.5rem, 2.9vw, 2.7rem); line-height: 1; letter-spacing: .02em; font-stretch: 100%;
+    font-variant-numeric: tabular-nums; color: var(--red); text-shadow: 0 0 14px rgba(240, 80, 58, .55), 0 0 2px rgba(240, 80, 58, .9);
+  }
+  .slate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); }
+  .slate-grid div { display: grid; gap: 4px; padding: 11px 18px 13px; background: var(--ink-2); }
+  .slate-grid .sg-wide { grid-column: 1 / -1; }
+  .slate-grid dt { color: var(--mute); font-family: var(--f-mono); font-size: .62rem; letter-spacing: .07em; text-transform: uppercase; font-stretch: 87.5%; }
+  .slate-grid dd { font-family: var(--f-display); font-weight: 760; font-size: clamp(1.15rem, 1.9vw, 1.7rem); line-height: 1; text-transform: uppercase; font-variation-settings: "wdth" 84; }
+  .ct-links { grid-area: links; border-top: 1px solid var(--line); }
+  .ct-links a {
+    position: relative; isolation: isolate; display: grid; grid-template-columns: 9rem minmax(0, 1fr) auto; align-items: center; gap: 20px;
+    padding: clamp(12px, 1.6vw, 20px) 0; border-bottom: 1px solid var(--line); text-decoration: none;
+  }
+  .ct-links a::before {
+    content: ""; position: absolute; z-index: -1; inset: 0 calc(-1 * var(--gut)); background: var(--paper);
+    transform: scaleY(0); transform-origin: 50% 100%; transition: transform .55s var(--ease);
+  }
+  .ctl-k { color: var(--mute); transition: color .3s; }
+  .ctl-v {
+    display: block; overflow: hidden; white-space: nowrap; font-family: var(--f-display); font-weight: 780; font-size: clamp(1.4rem, 3.1vw, 3.1rem);
+    line-height: 1; text-transform: uppercase; letter-spacing: -.01em; font-variation-settings: "wdth" 88;
+  }
+  .ct-links .ico { width: clamp(1.2rem, 2.2vw, 2rem); height: clamp(1.2rem, 2.2vw, 2rem); transition: rotate .5s var(--ease); }
+  @media (hover: hover) {
+    .ct-links a:hover { color: var(--ink); }
+    .ct-links a:hover::before { transform: scaleY(1); }
+    .ct-links a:hover .ctl-k { color: var(--ink); }
+    .ct-links a:hover .roll { transform: translateY(-100%); }
+    .ct-links a:hover .ico { rotate: 45deg; }
+  }
+  @media (max-width: 900px) {
+    .contact { grid-template-columns: minmax(0, 1fr); grid-template-areas: "main" "slate" "links"; }
+    .slate { justify-self: start; }
+    .ct-links a { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; }
+    .ctl-k { grid-column: 1 / -1; }
+  }
+  @media (max-width: 420px) { .slate-tc { padding: 12px 14px; } .slate-grid div { padding: 9px 14px 11px; } }
+
+  /* Fin : fondu au noir qui se resserre en éclipse, l'anneau de points en couronne, puis le pied de page */
+  .fin { position: relative; height: 100vh; height: 100svh; display: grid; place-content: center; justify-items: center; gap: clamp(14px, 2.4vh, 24px); overflow: hidden; text-align: center; }
+  .fin-disc {
+    position: absolute; left: 50%; top: 50%; width: min(62vmin, 560px); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%;
+    background: #050608; box-shadow: 0 0 0 1px rgba(236, 237, 239, .14); pointer-events: none;
+  }
+  .motion .fin-disc { box-shadow: 0 0 140px 24px rgba(143, 155, 255, .07); will-change: transform; }
+  .fin-word { position: relative; z-index: 1; font-family: var(--f-display); font-weight: 850; font-size: clamp(2.6rem, 8.5vw, 8rem); line-height: .8; text-transform: uppercase; font-variation-settings: "wdth" var(--w, 70); }
+  .fin-thanks { position: relative; z-index: 1; color: var(--mute); }
+  .fin .btn { z-index: 1; margin-top: 4px; }
+  .fin-foot {
+    position: absolute; z-index: 1; left: var(--gut); right: var(--gut); bottom: calc(var(--hud) + env(safe-area-inset-bottom, 0px) + 12px);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--mute);
+  }
+  .fin-foot a { text-decoration: none; transition: color .2s; }
+  .fin-foot a:hover { color: var(--paper); }
+  @media (max-width: 600px) { .fin-foot { justify-content: center; } .fin-foot span:nth-child(2) { display: none; } }
 
   /* Ident, coupes, chiffres illustrés, vrais écrans, son */
   .stats-viz, .hud-sound, .ident, .gl { display: none; }
@@ -559,10 +627,11 @@
     content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; right: calc(100% - 20vh); width: 50vh;
     background-color: var(--blue); background-image: var(--grain); transform: skewX(-11deg); transform-origin: 100% 50%;
   }
-  .motion .cr-frame { position: relative; height: 100vh; height: 100svh; padding: 0; overflow: hidden; }
-  .motion .cr-frame::before, .motion .cr-frame::after { content: ""; position: absolute; left: 0; right: 0; z-index: 1; height: 16%; pointer-events: none; }
-  .motion .cr-frame::before { top: 0; background: linear-gradient(var(--ink), rgba(12, 13, 16, 0)); }
-  .motion .cr-frame::after { bottom: 0; background: linear-gradient(rgba(12, 13, 16, 0), var(--ink)); }
+  /* Fondu haut et bas par masque : pas d'aplat d'encre qui trancherait sur le grain et sur le calque 3D */
+  .motion .cr-frame {
+    position: relative; height: 100vh; height: 100svh; padding: 0; overflow: hidden;
+    -webkit-mask-image: linear-gradient(transparent, #000 16%, #000 84%, transparent); mask-image: linear-gradient(transparent, #000 16%, #000 84%, transparent);
+  }
   .motion .cr-roll { position: absolute; top: 0; left: var(--gut); right: var(--gut); }
   @media (max-width: 700px) {
     .nle-heads em { display: none; }
@@ -574,6 +643,71 @@
     .motion .cc-list { font-size: .8rem; gap: 5px; line-height: 1.4; }
     .motion .clip-card { gap: 8px; }
   }
+
+  /* Retour dans la session ou lien direct : ni compte à rebours ni ident, les volets s'ouvrent tout de suite */
+  .revisit .leader-core, .revisit .leader-skip, .revisit .ident { display: none; }
+
+  /* Coupe franche : deux volets d'encre se ferment avant de changer de page */
+  .cut { display: none; }
+  .motion .cut { display: block; position: fixed; inset: 0; z-index: 75; pointer-events: none; }
+  .cut i { position: absolute; left: 0; right: 0; height: 50.5%; background: var(--ink); transition: transform .55s cubic-bezier(.7, 0, .84, 0); }
+  .cut .t { top: 0; transform: translateY(-101%); }
+  .cut .b { bottom: 0; transform: translateY(101%); }
+  .cutting .cut i { transform: none; }
+
+  /* Curseur viseur (souris) : quatre coins qui cadrent ce qu'on peut cliquer */
+  .cur { display: none; }
+  .has-cur, .has-cur * { cursor: none !important; }
+  .has-cur .cur { display: block; position: fixed; left: 0; top: 0; z-index: 90; pointer-events: none; color: #fff; mix-blend-mode: difference; opacity: 0; transition: opacity .3s; }
+  .has-cur.cur-in .cur { opacity: 1; }
+  .cur i { position: absolute; left: 0; top: 0; width: 8px; height: 8px; border: 0 solid currentColor; will-change: transform; }
+  .cur .c1 { border-width: 1.5px 0 0 1.5px; }
+  .cur .c2 { border-width: 1.5px 1.5px 0 0; margin-left: -8px; }
+  .cur .c3 { border-width: 0 0 1.5px 1.5px; margin-top: -8px; }
+  .cur .c4 { border-width: 0 1.5px 1.5px 0; margin: -8px 0 0 -8px; }
+  .cur-dot { position: absolute; left: -2px; top: -2px; width: 4px; height: 4px; border-radius: 50%; background: currentColor; transition: scale .25s var(--ease); }
+  .cur-snap .cur-dot { scale: 0; }
+  .cur-label { position: absolute; left: 0; top: 0; padding-top: 9px; font-size: .58rem; white-space: nowrap; opacity: 0; transition: opacity .2s; }
+  .cur-lab .cur-label { opacity: 1; }
+
+  /* Barre de lecture : on la saisit pour parcourir le film, comme dans un logiciel de montage */
+  .scrub-tip { display: none; }
+  .motion .scrub { pointer-events: auto; touch-action: none; }
+  .motion .scrub-tip {
+    display: block; position: absolute; bottom: 100%; left: calc(var(--p) * 100%); translate: -50% -4px; padding: 5px 8px;
+    background: var(--paper); color: var(--ink); white-space: nowrap; opacity: 0; transition: opacity .2s; pointer-events: none;
+  }
+  .scrubbing .scrub-tip { opacity: 1; }
+  .scrubbing .scrub-head { width: 3px; margin-left: -1px; }
+  .scrubbing .key span { opacity: 0 !important; }
+  .hud-speed { display: none; font-variant-numeric: tabular-nums; }
+  .fast .hud-speed { display: inline; }
+
+  /* Aide des raccourcis, façon carte clavier de table de montage */
+  .hud-keys { display: none; }
+  @media (hover: hover) and (pointer: fine) {
+    .motion .hud-keys { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid currentColor; font-size: .72rem; }
+  }
+  .kb { position: fixed; inset: 0; z-index: 85; display: grid; place-items: center; padding: var(--gut); background: rgba(12, 13, 16, .8); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .kb[hidden] { display: none; }
+  .kb-card { width: min(100%, 620px); border: 1px solid var(--line); background: var(--ink-2); background-image: var(--grain); }
+  .kb-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--line); color: var(--mute); }
+  .kb-close { padding: 6px 0; letter-spacing: .07em; text-transform: uppercase; transition: color .2s; }
+  .kb-close:hover { color: var(--paper); }
+  .kb-title { padding: 26px 24px 4px; font-family: var(--f-display); font-weight: 850; font-size: clamp(2.2rem, 6vw, 3.8rem); line-height: .84; text-transform: uppercase; letter-spacing: -.012em; font-variation-settings: "wdth" 78; }
+  .kb-list { display: grid; padding: 14px 24px 8px; }
+  .kb-list div { display: grid; grid-template-columns: 8.6rem minmax(0, 1fr); align-items: center; gap: 18px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .kb-list div:first-child { border-top: 0; }
+  .kb-list dt { display: flex; gap: 6px; }
+  .kb-list dd { color: var(--mute); font-size: .95rem; line-height: 1.38; text-wrap: pretty; }
+  .kb-list dd b { color: var(--paper); font-weight: 600; }
+  .kb-foot { padding: 12px 24px 18px; border-top: 1px solid var(--line); color: var(--mute); }
+  kbd {
+    display: inline-grid; place-items: center; min-width: 30px; height: 30px; padding: 0 8px;
+    border: 1px solid rgba(236, 237, 239, .45); border-bottom-width: 3px; color: var(--paper);
+    font-family: var(--f-mono); font-size: .66rem; letter-spacing: .04em; text-transform: uppercase; font-stretch: 87.5%;
+  }
+  @media (max-width: 520px) { .kb-list div { grid-template-columns: 1fr; gap: 8px; } }
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -616,7 +750,7 @@
     <a class="hud-link hud-anim" href="./">Animated version</a>
     <span class="tc" aria-hidden="true">00:00:00:00</span>
     <button class="hud-play" type="button" aria-pressed="false" aria-label="Autoplay" aria-keyshortcuts="Space">
-      <svg class="ico i-play" aria-hidden="true"><use href="#i-play"/></svg><svg class="ico i-pause" aria-hidden="true"><use href="#i-pause"/></svg><span class="hud-play-l">Play</span>
+      <svg class="ico i-play" aria-hidden="true"><use href="#i-play"/></svg><svg class="ico i-pause" aria-hidden="true"><use href="#i-pause"/></svg><span class="hud-play-l">Play</span><span class="hud-speed" aria-hidden="true"></span>
     </button>
   </div>
 </header>
@@ -637,12 +771,31 @@
       <li><a class="key" href="#generique" style="--x:.96"><i></i><span>09 Credits</span></a></li>
     </ol>
     <div class="scrub-head"></div>
+    <span class="scrub-tip" aria-hidden="true"></span>
   </div>
   <span class="tc-total" aria-hidden="true">00:00:00:00</span>
+  <button class="hud-keys" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="kb" aria-label="Keyboard shortcuts" aria-keyshortcuts="?">?</button>
   <button class="hud-sound" type="button" aria-pressed="false" aria-label="Sound"><svg class="ico i-off" aria-hidden="true"><use href="#i-sound-off"/></svg><svg class="ico i-on" aria-hidden="true"><use href="#i-sound-on"/></svg></button>
 </nav>
 
 <div class="pv" aria-hidden="true"><canvas></canvas><span class="pv-tag mono"></span></div>
+<div class="cur" aria-hidden="true"><i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i><span class="cur-dot"></span><span class="cur-label mono"></span></div>
+<div class="cut" aria-hidden="true"><i class="t"></i><i class="b"></i></div>
+
+<div class="kb" id="kb" role="dialog" aria-modal="true" aria-labelledby="kb-title" hidden>
+  <div class="kb-card">
+    <div class="kb-bar mono"><span>Keyboard shortcuts</span><button class="kb-close mono" type="button">Close&ensp;·&ensp;Esc</button></div>
+    <p class="kb-title" id="kb-title">Edit bay</p>
+    <dl class="kb-list">
+      <div><dt><kbd>Space</kbd></dt><dd><b>Play</b> and pause the showreel</dd></div>
+      <div><dt><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></dt><dd><b>Reverse, pause, forward.</b> Press J or L again to speed up, just like in an editing suite.</dd></div>
+      <div><dt><kbd aria-label="Left arrow">←</kbd><kbd aria-label="Right arrow">→</kbd></dt><dd><b>Previous</b> or next scene</dd></div>
+      <div><dt><kbd>M</kbd></dt><dd><b>Sound</b> on or off</dd></div>
+      <div><dt><kbd>?</kbd></dt><dd><b>This help</b>, open or close</dd></div>
+    </dl>
+    <p class="kb-foot mono">Grab the playback bar to scrub through the film.</p>
+  </div>
+</div>
 
 <!-- Reading the source? Good instinct. The rest of the challenge is in the browser console (F12). -->
 <canvas class="gl" aria-hidden="true"></canvas>
@@ -1095,25 +1248,48 @@
     </div>
 
     <div class="contact" id="contact">
-      <h2 class="contact-title">Let’s shoot the <em>sequel</em> together.</h2>
-      <div class="contact-mail">
-        <span class="mail" id="mail">alessandro.gagliardi225145<wbr>@gmail.com</span>
-        <button class="btn btn-line" type="button" data-copy="alessandro.gagliardi225145@gmail.com" data-magnetic><svg class="ico" aria-hidden="true"><use href="#i-copy"/></svg><span>Copy address</span></button>
-        <a class="btn btn-solid" href="mailto:alessandro.gagliardi225145@gmail.com" data-magnetic><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg><span>Get in touch</span></a>
-        <a class="btn btn-line" href="../cv-alessandro-gagliardi-en.pdf" download data-magnetic><svg class="ico" aria-hidden="true"><use href="#i-download"/></svg><span>Download CV</span></a>
+      <div class="ct-main">
+        <h2 class="contact-title">Let’s shoot the <em>sequel</em> together.</h2>
+        <div class="ct-mail">
+          <span class="mail" id="mail">alessandro.gagliardi225145<wbr>@gmail.com</span>
+          <div class="contact-mail">
+            <a class="btn btn-solid" href="mailto:alessandro.gagliardi225145@gmail.com" data-magnetic><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg><span>Get in touch</span></a>
+            <button class="btn btn-line" type="button" data-copy="alessandro.gagliardi225145@gmail.com" data-magnetic><svg class="ico" aria-hidden="true"><use href="#i-copy"/></svg><span>Copy address</span></button>
+            <a class="btn btn-line" href="../cv-alessandro-gagliardi-en.pdf" download data-magnetic><svg class="ico" aria-hidden="true"><use href="#i-download"/></svg><span>Download CV</span></a>
+          </div>
+          <p class="copy-status" role="status" aria-live="polite"></p>
+        </div>
       </div>
-      <ul class="contact-links">
-        <li><a href="https://github.com/Pazificateur69" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-github"/></svg>GitHub</a></li>
-        <li><a href="https://www.linkedin.com/in/alessandro-cyber/" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-linkedin"/></svg>LinkedIn</a></li>
-        <li><a href="https://pazificateur69.github.io" target="_blank" rel="noopener">Portfolio<svg class="ico" aria-hidden="true"><use href="#i-out"/></svg></a></li>
+      <figure class="slate" aria-label="Slate for the next scene">
+        <button class="slate-sticks" type="button" aria-label="Clap the slate"><i class="stick stick-top"></i><i class="stick stick-base"></i></button>
+        <div class="slate-body">
+          <p class="slate-tc"><span class="slate-tc-l mono">TC · Lyon</span><b class="slate-tc-v" aria-hidden="true">00:00:00:00</b></p>
+          <dl class="slate-grid">
+            <div class="sg-wide"><dt>Production</dt><dd>Alessandro Gagliardi</dd></div>
+            <div><dt>Scene</dt><dd>10 · The sequel</dd></div>
+            <div><dt>Take</dt><dd>01</dd></div>
+            <div><dt>Date</dt><dd class="slate-date">2026</dd></div>
+            <div><dt>Location</dt><dd>Lyon, France</dd></div>
+          </dl>
+        </div>
+      </figure>
+      <ul class="ct-links">
+        <li><a href="https://github.com/Pazificateur69" target="_blank" rel="noopener"><span class="ctl-k mono">GitHub</span><span class="ctl-v"><span class="roll" data-t="Pazificateur69">Pazificateur69</span></span><svg class="ico" aria-hidden="true"><use href="#i-out"/></svg></a></li>
+        <li><a href="https://www.linkedin.com/in/alessandro-cyber/" target="_blank" rel="noopener"><span class="ctl-k mono">LinkedIn</span><span class="ctl-v"><span class="roll" data-t="alessandro-cyber">alessandro-cyber</span></span><svg class="ico" aria-hidden="true"><use href="#i-out"/></svg></a></li>
+        <li><a href="https://pazificateur69.github.io" target="_blank" rel="noopener"><span class="ctl-k mono">Portfolio</span><span class="ctl-v"><span class="roll" data-t="pazificateur69.github.io">pazificateur69.github.io</span></span><svg class="ico" aria-hidden="true"><use href="#i-out"/></svg></a></li>
       </ul>
-      <p class="copy-status" role="status" aria-live="polite"></p>
     </div>
 
     <div class="fin">
       <div class="fin-disc" aria-hidden="true"></div>
       <p class="fin-word">The End</p>
+      <p class="fin-thanks mono">Thanks for watching</p>
       <button class="btn btn-line" type="button" data-rewind><svg class="ico" aria-hidden="true"><use href="#i-rewind"/></svg><span>Rewind</span></button>
+      <footer class="fin-foot mono">
+        <span>© 2026 Alessandro Gagliardi</span>
+        <span>No cookies, no analytics</span>
+        <a href="https://pazificateur69.github.io/.well-known/security.txt" target="_blank" rel="noopener">security.txt</a>
+      </footer>
     </div>
   </section>
 </main>
@@ -1483,7 +1659,21 @@
     try { navigator.clipboard.writeText(btn.dataset.copy).then(() => done(true), () => done(false)); } catch (e) { done(false); }
   }));
 
+  /* ---------- Clap : timecode à l'heure de Lyon (images comprises, 25 par seconde) et date du jour ---------- */
+  const slate = $('.slate'), slateTc = $('.slate-tc-v', slate);
+  let clock = null, tcHold = 0, slateVis = false, lastTcS = '';
+  try { clock = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }); } catch (e) {}
+  try { $('.slate-date', slate).textContent = new Date().toLocaleDateString(d.lang === 'en' ? 'en-GB' : 'fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Europe/Paris' }); } catch (e) {}
+  const slateTick = () => {
+    if (!slateVis || performance.now() < tcHold) return;  // après le clap, le timecode reste figé un instant, comme sur un vrai clap
+    const t = new Date(), s = (clock ? clock.format(t) : t.toTimeString().slice(0, 8)) + ':' + String(Math.floor(t.getMilliseconds() / 40)).padStart(2, '0');
+    if (s !== lastTcS) { lastTcS = s; slateTc.textContent = s; }
+  };
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => { slateVis = es[0].isIntersecting; slateTick(); }).observe(slate);
+  else slateVis = true;
+
   if (!motion) {
+    setInterval(slateTick, 1000);
     const rew = $('[data-rewind]');
     rew.addEventListener('click', () => window.scrollTo({ top: 0 }));
     let rt;
@@ -1549,8 +1739,8 @@
       .fromTo(glIntro, { v: 0 }, { v: 1, duration: 2.6, ease: 'power3.out' }, 0)
       .add(() => { hn.classList.remove('masking'); gsap.set(chars, { clearProps: '--w' }); });
   }
-  ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false });
-  gsap.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } })
+  // Un seul déclencheur pour l'épinglage et la sortie : un second, calé sur l'élément épinglé, se déclenchait un écran trop tard
+  gsap.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false, scrub: true } })
     .to('.hn-line:nth-child(1)', { xPercent: -14, ease: 'none' }, 0)
     .to('.hn-line:nth-child(2)', { xPercent: 10, ease: 'none' }, 0)
     .to('.hero-foot', { yPercent: 40, opacity: 0, ease: 'none' }, 0)
@@ -1591,7 +1781,8 @@
     .fromTo('.ml-1 .ml-c', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.4')
     .fromTo('.ml-2 .ml-t', { xPercent: 105 }, { xPercent: 0, duration: 1, ease: 'power3.out' }, '-=0.3')
     .fromTo('.ml-2 .ml-c', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.4')
-    .fromTo('.ml-3 .ml-t', { yPercent: 105 }, { yPercent: 0, duration: 1, ease: 'power3.out' }, '-=0.3')
+    // 140 % et non 105 % : l'accent du É dépasse au-dessus de la ligne et resterait visible sous le masque
+    .fromTo('.ml-3 .ml-t', { yPercent: 140 }, { yPercent: 0, duration: 1, ease: 'power3.out' }, '-=0.3')
     .fromTo('.ml-3 .ml-c', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.4')
     .fromTo(mWords, { opacity: 0.14 }, { opacity: 1, duration: 0.25, stagger: 0.045, ease: 'none' }, '-=0.2');
 
@@ -1861,7 +2052,21 @@
     .to({}, { duration: 0.7 });
 
   /* ---------- Titres : étirement à l’entrée, léger parallaxe ---------- */
-  $$('.big-title, .career-title, .contact-title').forEach(t => {
+  // Étroit au départ, un titre peut tenir sur moins de lignes et grandir pendant l'étirement, ce qui décalerait tous les
+  // déclencheurs en dessous : on lui réserve d'avance la hauteur qu'il aura à sa largeur finale
+  const wTitles = $$('.big-title, .career-title, .contact-title');
+  const lockTitles = () => wTitles.forEach(t => {
+    const c = t.cloneNode(true);
+    c.setAttribute('aria-hidden', 'true');
+    // Largeur du parent : la largeur maximale en ch du titre se recalcule sur le clone, à sa largeur de fonte finale
+    c.style.cssText = `position:absolute;left:-10000px;top:0;visibility:hidden;width:${innerW(t.parentElement)}px;font-variation-settings:"wdth" ${t.classList.contains('contact-title') ? 76 : 78}`;
+    t.parentElement.append(c);
+    t.style.minHeight = c.offsetHeight + 'px';
+    c.remove();
+  });
+  lockTitles();
+  ScrollTrigger.addEventListener('refreshInit', lockTitles);
+  wTitles.forEach(t => {
     const w = t.classList.contains('contact-title') ? 76 : 78;
     heavy.push(gsap.fromTo(t, { '--w': 50, opacity: 0 }, { '--w': w, opacity: 1, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: t, start: 'top 88%', toggleActions: 'play none none reverse' } }));
   });
@@ -1995,6 +2200,8 @@
     else if (kind === 'open') blip(a, t, 880, 0.08, 0.06);
     else if (kind === 'close') blip(a, t, 560, 0.08, 0.05);
     else if (kind === 'copy') { blip(a, t, 880, 0.07, 0.06); blip(a, t + 0.08, 1320, 0.1, 0.06); }
+    else if (kind === 'tick') blip(a, t, 1250, 0.03, 0.035, 'square');
+    else if (kind === 'clap') { whoosh(a, t, 2600, 5200, 0.08, 0.24); blip(a, t, 150, 0.08, 0.18, 'triangle'); blip(a, t, 60, 0.18, 0.2); }
   };
   sndBtn.addEventListener('click', () => { setSnd(!sndOn); if (sndOn) { audio(); setTimeout(() => sfx('open'), 40); } });
   if (sndOn) {
@@ -2007,20 +2214,42 @@
   const crFrame = $('.cr-frame'), crRoll = $('.cr-roll');
   gsap.timeline({ scrollTrigger: { trigger: crFrame, start: 'top top', end: () => '+=' + (crRoll.offsetHeight + crFrame.offsetHeight) * 0.85, pin: true, scrub: true, invalidateOnRefresh: true } })
     .fromTo(crRoll, { y: () => crFrame.offsetHeight * 0.92 }, { y: () => crFrame.offsetHeight * 0.08 - crRoll.offsetHeight, ease: 'none' });
-  gsap.from('.contact-mail, .contact-links', { y: 30, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.1, scrollTrigger: { trigger: '.contact', start: 'top 60%', toggleActions: 'play none none reverse' } });
-  const fin = $('.fin');
-  const disc = $('.fin-disc');
-  gsap.fromTo(disc, { scale: () => Math.hypot(innerWidth, innerHeight) / disc.offsetWidth * 1.04 }, {
-    scale: 1, ease: 'none',
-    scrollTrigger: { trigger: fin, start: 'top 60%', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true }
+  gsap.from('.ct-mail, .ct-links li', { y: 30, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.08, scrollTrigger: { trigger: '.contact', start: 'top 60%', toggleActions: 'play none none reverse' } });
+  gsap.from(slate, { y: 50, opacity: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '.contact', start: 'top 60%', toggleActions: 'play none none reverse' } });
+  gsap.ticker.add(slateTick);
+  // Le clap claque en entrant à l'écran : flash, secousse, son, timecode figé
+  const stick = $('.stick-top', slate), CLAP_OPEN = -26;
+  gsap.set(stick, { rotate: CLAP_OPEN });
+  const clack = () => {
+    sfx('clap');
+    tcHold = performance.now() + 1100;
+    gsap.fromTo(slate, { '--flash': 0.5 }, { '--flash': 0, duration: 0.4, ease: 'power2.out', overwrite: 'auto' });
+    gsap.fromTo(slate, { x: -6 }, { x: 0, duration: 0.6, ease: 'elastic.out(1, .35)' });
+  };
+  ScrollTrigger.create({
+    trigger: slate, start: 'top 70%',
+    onEnter: () => gsap.timeline().to(stick, { rotate: 0, duration: 0.3, delay: 0.35, ease: 'power4.in', overwrite: true }).call(clack),
+    onLeaveBack: () => gsap.to(stick, { rotate: CLAP_OPEN, duration: 0.5, ease: 'power3.out', overwrite: true })
   });
+  $('.slate-sticks', slate).addEventListener('click', () => gsap.timeline()
+    .to(stick, { rotate: CLAP_OPEN, duration: 0.24, ease: 'power2.out', overwrite: true })
+    .to(stick, { rotate: 0, duration: 0.26, ease: 'power4.in' })
+    .call(clack));
+
+  // Fin : le noir couvre l'écran puis se resserre en éclipse, cerclée par l'anneau de points ; le mot FIN s'étire
+  const fin = $('.fin'), disc = $('.fin-disc');
+  gsap.timeline({ scrollTrigger: { trigger: fin, start: 'top 75%', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true } })
+    .fromTo(disc, { scale: () => Math.hypot(innerWidth, innerHeight) / disc.offsetWidth * 1.04 }, { scale: 1, ease: 'power2.inOut', duration: 1 }, 0)
+    .fromTo('.fin-word', { '--w': 40, opacity: 0, yPercent: 18 }, { '--w': 70, opacity: 1, yPercent: 0, ease: 'expo.out', duration: 0.65 }, 0.3)
+    .fromTo('.fin-thanks, .fin .btn', { opacity: 0, y: 18 }, { opacity: 1, y: 0, stagger: 0.08, duration: 0.4, ease: 'power3.out' }, 0.6);
 
   /* ---------- HUD : timecode, scènes, lecture ---------- */
   const FPS = 25, PPF = 8;
   const scenes = $$('[data-scene]'), keys = $$('.key');
   const tcEl = $('.tc'), tcTotal = $('.tc-total'), sceneNow = $('.scene-now'), scrub = $('.scrub');
   const RATE = { chiffres: 0.8, parcours: 0.5, terrain: 0.75, generique: 0.85 };
-  let tops = [], max = 1, curScene = 0, playing = false;
+  let tops = [], max = 1, curScene = 0, playing = false, speed = 1, scrubbing = false;
+  const tip = $('.scrub-tip', scrub), hudSpeed = $('.hud-speed');
   const fmt = f => {
     f = Math.max(0, Math.round(f));
     const s = Math.floor(f / FPS);
@@ -2071,7 +2300,9 @@
       curScene = i;
       keys.forEach((k, j) => k.classList.toggle('on', j === i));
       scramble(sceneNow, String(i + 1).padStart(2, '0') + ' ' + scenes[i].dataset.scene);
+      if (scrubbing) sfx('tick');
     }
+    if (scrubbing) tip.textContent = fmt(y / PPF) + '  ' + String(i + 1).padStart(2, '0') + ' ' + scenes[i].dataset.scene;
   }
   keys.forEach((k, i) => k.addEventListener('click', e => { e.preventDefault(); setPlaying(false); goTo(tops[i] + 1); }));
   $$('a[href^="#"]:not(.key)').forEach(a => a.addEventListener('click', e => {
@@ -2083,7 +2314,14 @@
   }));
 
   const hudPlay = $('.hud-play'), hudPlayL = $('.hud-play-l');
+  // Vitesse de lecture façon J/K/L : négative en arrière, doublée à chaque nouvel appui (jusqu'à 4)
+  function setSpeed(v) {
+    speed = v;
+    d.classList.toggle('fast', v !== 1);
+    hudSpeed.textContent = v === 1 ? '' : (v < 0 ? ' ◂×' : ' ×') + Math.abs(v);
+  }
   function setPlaying(v) {
+    if (!v && speed !== 1) setSpeed(1);
     if (v === playing) return;
     playing = v;
     d.classList.toggle('is-playing', v);
@@ -2091,6 +2329,7 @@
     hudPlayL.textContent = v ? 'Pause' : 'Play';
   }
   const startPlay = () => {
+    if (speed !== 1) setSpeed(1);
     if (Y() >= maxY() - 2) { if (lenis) lenis.scrollTo(0, { immediate: true, force: true }); else window.scrollTo(0, 0); }
     setPlaying(true);
   };
@@ -2098,23 +2337,107 @@
   hudPlay.addEventListener('click', () => (playing ? setPlaying(false) : startPlay()));
   addEventListener('wheel', () => { if (playing) setPlaying(false); }, { passive: true });
   addEventListener('touchstart', e => { if (playing && !e.target.closest('button, a')) setPlaying(false); }, { passive: true });
+  // Points de montage : début de la scène en cours, puis scène précédente ; ou scène suivante
+  function editPoint(dir) {
+    const y = Y();
+    let i = -1;
+    if (dir > 0) i = tops.findIndex(t => t > y + 2);
+    else { for (let k = tops.length - 1; k >= 0; k--) if (tops[k] < y - 2) { i = k; break; } }
+    if (i < 0) i = dir > 0 ? -1 : 0;
+    if (i < 0) return;
+    setPlaying(false);
+    goTo(tops[i] + 1, 1.4);
+  }
   addEventListener('keydown', e => {
-    if (e.code === 'Space' && !e.target.closest('button, a, input, textarea, select, [contenteditable]')) {
-      e.preventDefault();
-      if (d.classList.contains('intro')) return;
-      playing ? setPlaying(false) : startPlay();
-      return;
+    if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest('input, textarea, select, [contenteditable]')) return;
+    if (d.classList.contains('intro')) { if (e.code === 'Space') e.preventDefault(); return; }
+    if (kbOpen) { if (e.key === 'Escape' || e.key === '?') { e.preventDefault(); setKb(false); } return; }
+    const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (e.code === 'Space' && !e.target.closest('button, a')) { e.preventDefault(); playing ? setPlaying(false) : startPlay(); }
+    else if (k === 'k') setPlaying(false);
+    else if (k === 'l') { if (playing && speed > 0) setSpeed(Math.min(4, speed * 2)); else startPlay(); }
+    else if (k === 'j') {
+      if (playing && speed < 0) setSpeed(Math.max(-4, speed * 2));
+      else if (Y() > 1) { setSpeed(-1); setPlaying(true); }
     }
-    if (playing && ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End'].includes(e.key)) setPlaying(false);
+    else if (k === 'ArrowRight' || k === 'ArrowLeft') { e.preventDefault(); editPoint(k === 'ArrowRight' ? 1 : -1); }
+    else if (k === 'm') sndBtn.click();
+    else if (k === '?') { e.preventDefault(); setKb(true); }
+    else if (playing && ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End'].includes(k)) setPlaying(false);
   });
   gsap.ticker.add((time, dt) => {
     if (!playing) return;
     const m = maxY(), y = Y();
-    if (y >= m - 1) { setPlaying(false); return; }
+    if ((speed > 0 && y >= m - 1) || (speed < 0 && y <= 0)) { setPlaying(false); return; }
     const rate = RATE[scenes[curScene].id] || 1;
-    const ny = Math.min(m, y + FPS * PPF * rate * Math.min(dt, 50) / 1000);
+    const ny = Math.max(0, Math.min(m, y + FPS * PPF * rate * speed * Math.min(dt, 50) / 1000));
     if (lenis) lenis.scrollTo(ny, { immediate: true, force: true }); else window.scrollTo(0, ny);
   });
+
+  /* ---------- Barre de lecture saisie à la souris ou au doigt : on parcourt le film ---------- */
+  const seek = e => {
+    const r = scrub.getBoundingClientRect(), y = gsap.utils.clamp(0, 1, (e.clientX - r.left) / r.width) * max;
+    if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else window.scrollTo(0, y);
+  };
+  scrub.addEventListener('pointerdown', e => {
+    if (e.button || e.target.closest('.key') || d.classList.contains('intro')) return;
+    e.preventDefault();
+    setPlaying(false);
+    scrubbing = true;
+    try { scrub.setPointerCapture(e.pointerId); } catch (err) {}
+    d.classList.add('scrubbing');
+    seek(e);
+    hud();
+  });
+  scrub.addEventListener('pointermove', e => { if (scrubbing) seek(e); });
+  const endScrub = () => { if (scrubbing) { scrubbing = false; d.classList.remove('scrubbing'); } };
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => scrub.addEventListener(n, endScrub));
+
+  /* ---------- Aide des raccourcis ---------- */
+  const kb = $('.kb'), kbBtn = $('.hud-keys'), kbCard = $('.kb-card', kb), kbClose = $('.kb-close', kb);
+  let kbOpen = false, kbFrom = null;
+  function setKb(v) {
+    if (v === kbOpen) return;
+    kbOpen = v;
+    kbBtn.setAttribute('aria-expanded', String(v));
+    gsap.killTweensOf([kb, kbCard]);
+    if (v) {
+      kbFrom = document.activeElement;
+      setPlaying(false);
+      kb.hidden = false;
+      if (lenis) lenis.stop();
+      gsap.fromTo(kb, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+      gsap.fromTo(kbCard, { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'expo.out' });
+      gsap.fromTo($$('.kb-list > div', kb), { x: -14, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: 'expo.out', stagger: 0.05, delay: 0.08 });
+      kbClose.focus({ preventScroll: true });
+      sfx('open');
+    } else {
+      if (lenis) lenis.start();
+      gsap.to(kb, { opacity: 0, duration: 0.25, ease: 'power2.in', onComplete: () => { kb.hidden = true; } });
+      if (kbFrom && kbFrom.focus) kbFrom.focus({ preventScroll: true });
+      sfx('close');
+    }
+  }
+  kbBtn.addEventListener('click', () => setKb(!kbOpen));
+  kbClose.addEventListener('click', () => setKb(false));
+  kb.addEventListener('click', e => { if (e.target === kb) setKb(false); });
+  kb.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); kbClose.focus(); } });
+
+  /* ---------- Coupe franche vers l'autre langue ou la version rapide ---------- */
+  $$('.hud-link[hreflang], .hud-quick').forEach(a => a.addEventListener('click', e => {
+    if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    setPlaying(false);
+    sfx('close');
+    d.classList.add('cutting');
+    setTimeout(() => { location.href = a.href; }, 600);
+  }));
+  // Retour arrière depuis la page suivante : la page revient du cache avec les volets fermés
+  addEventListener('pageshow', e => { if (e.persisted) d.classList.remove('cutting'); });
+
+  /* ---------- Onglet en arrière-plan : le film est en pause ---------- */
+  const T0 = document.title, PAUSE_T = 'Paused · Alessandro Gagliardi';
+  document.addEventListener('visibilitychange', () => { document.title = document.hidden ? '❚❚ ' + PAUSE_T : T0; });
   $('[data-rewind]').addEventListener('click', () => {
     setPlaying(false);
     if (lenis) lenis.scrollTo(0, { duration: 2.6, easing: x => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2) });
@@ -2130,6 +2453,69 @@
     });
     el.addEventListener('pointerleave', () => { xTo(0); yTo(0); });
   });
+
+  /* ---------- Curseur viseur : quatre coins qui cadrent ce qu'on peut cliquer, avec l'action en légende ---------- */
+  const CUR = { play: 'Play', pause: 'Pause', open: 'Open', close: 'Close', ext: 'View', dl: 'Download', copy: 'Copy', mail: 'Email', go: 'Go', drag: 'Drag', rew: 'Rewind', snd: 'Sound', keys: 'Shortcuts', lang: 'Français', clap: 'Clap' };
+  if (fine) {
+    const cur = $('.cur'), dot = $('.cur-dot', cur), lab = $('.cur-label', cur), cs = $$('i', cur);
+    const q = (el, p) => gsap.quickTo(el, p, { duration: 0.34, ease: 'power3.out' });
+    const cx = cs.map(c => q(c, 'x')), cy = cs.map(c => q(c, 'y')), lx = q(lab, 'x'), ly = q(lab, 'y');
+    const dx = gsap.quickSetter(dot, 'x', 'px'), dy = gsap.quickSetter(dot, 'y', 'px');
+    const SEL = 'a, button, .nclip, .scrub, .hn';
+    let px = -99, py = -99, tgt = null, mode = '', down = false, sy = 0, shown = false;
+    const labelOf = t => {
+      if (t.matches('[data-play]')) return CUR.play;
+      if (t.matches('.hud-play')) return playing ? CUR.pause : CUR.play;
+      if (t.matches('.proj-row')) return t.getAttribute('aria-expanded') === 'true' ? CUR.close : CUR.open;
+      if (t.matches('[data-copy]')) return CUR.copy;
+      if (t.matches('[download]')) return CUR.dl;
+      if (t.matches('[href^="mailto:"]')) return CUR.mail;
+      if (t.matches('[target="_blank"]')) return CUR.ext;
+      if (t.matches('[data-rewind]')) return CUR.rew;
+      if (t.matches('.hud-sound')) return CUR.snd;
+      if (t.matches('.hud-keys')) return CUR.keys;
+      if (t.matches('.slate-sticks')) return CUR.clap;
+      if (t.matches('[hreflang]')) return CUR.lang;
+      if (t.matches('.scrub')) return CUR.drag;
+      if (t.matches('.nclip, a[href^="#"]:not(.key)')) return CUR.go;
+      return '';
+    };
+    function pick(el) {
+      const t = el && el.closest ? el.closest(SEL) : null;
+      tgt = t && !t.matches('.scrub, .hn') ? t : null;
+      mode = !t ? '' : t.matches('.hn') ? 'fine' : t.matches('.scrub') ? 'drag' : 'snap';
+      const txt = t ? labelOf(t) : '';
+      if (lab.textContent !== txt) lab.textContent = txt;
+      d.classList.toggle('cur-snap', !!tgt);
+      d.classList.toggle('cur-lab', !!txt);
+    }
+    addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse') { if (shown) { shown = false; d.classList.remove('cur-in'); } return; }
+      px = e.clientX; py = e.clientY; dx(px); dy(py);
+      if (!shown) { shown = true; d.classList.add('has-cur', 'cur-in'); }
+    }, { passive: true });
+    addEventListener('pointerover', e => { if (e.pointerType === 'mouse') pick(e.target); }, { passive: true });
+    d.addEventListener('pointerleave', () => { shown = false; d.classList.remove('cur-in'); });
+    addEventListener('pointerdown', () => { down = true; }, { passive: true });
+    addEventListener('pointerup', e => { down = false; requestAnimationFrame(() => pick(document.elementFromPoint(e.clientX, e.clientY))); }, { passive: true });
+    addEventListener('blur', () => { down = false; });
+    gsap.ticker.add(() => {
+      if (!shown) return;
+      // Au défilement, l'élément sous le pointeur change sans que la souris bouge
+      if (window.scrollY !== sy) { sy = window.scrollY; pick(document.elementFromPoint(px, py)); }
+      let x0, y0, x1, y1;
+      if (tgt && tgt.isConnected) {
+        const r = tgt.getBoundingClientRect(), p = 6;
+        x0 = r.left - p; y0 = r.top - p; x1 = r.right + p; y1 = r.bottom + p;
+      } else {
+        const s = mode === 'fine' ? 5 : mode === 'drag' ? 15 : 11;
+        x0 = px - s; y0 = py - s; x1 = px + s; y1 = py + s;
+      }
+      if (down) { x0 += 3; y0 += 3; x1 -= 3; y1 -= 3; }
+      cx[0](x0); cy[0](y0); cx[1](x1); cy[1](y0); cx[2](x0); cy[2](y1); cx[3](x1); cy[3](y1);
+      lx(x0); ly(y1);
+    });
+  }
 
   ScrollTrigger.create({ start: 0, end: 'max', onUpdate: hud });
   ScrollTrigger.addEventListener('refresh', () => { measureScenes(); hud(); renderNle(); vizSize(); drawStats(); });
@@ -2378,30 +2764,50 @@
   const lock = on => { if (lenis) (on ? lenis.stop() : lenis.start()); d.style.overflow = on ? 'hidden' : ''; };
   lock(true);
   const leader = $('.leader'), ring = $('.leader-ring'), lnum = $('.leader-num');
-  const intro = gsap.timeline({
-    onComplete: () => {
-      d.classList.remove('intro');
-      lock(false);
-      ScrollTrigger.refresh();
-    }
+  const short = d.classList.contains('revisit');
+  let hashEl = null;
+  try { hashEl = location.hash.length > 1 ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null; } catch (e) {}
+  if (hashEl && !hashEl.closest('main')) hashEl = null;
+  // On rend la main dès que les volets sont ouverts : le nom finit d'entrer pendant qu'on peut déjà défiler
+  let opened = false;
+  const finish = () => {
+    if (opened) return;
+    opened = true;
+    d.classList.remove('intro');
+    lock(false);
+    ScrollTrigger.refresh();
+    try { sessionStorage.setItem('reel-vu', '1'); } catch (e) {}
+  };
+  const intro = gsap.timeline({ onComplete: finish });
+  if (!short) {
+    ['3', '2', '1'].forEach(n => {
+      intro.call(() => { lnum.textContent = n; })
+        .fromTo(lnum, { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: 'power2.out' })
+        .fromTo(ring, { '--a': '0deg' }, { '--a': '360deg', duration: 0.4, ease: 'none' }, '<');
+    });
+    // Ident : le monogramme « AG » s'étire, ses copies rouge et bleue se rejoignent, puis l'image clé tourne
+    const identShift = (i, el) => (el.classList.contains('ident-r') ? -1 : 1) * 0.13 * num(getComputedStyle(el).fontSize);
+    intro.to('.leader-core', { scale: 0.92, opacity: 0, duration: 0.2, ease: 'power2.in' })
+      .set('.ident', { opacity: 1 })
+      .fromTo('.ident-t', { '--w': 50 }, { '--w': 108, duration: 0.75, ease: 'expo.out' })
+      .fromTo('.ident-r, .ident-b', { x: identShift, opacity: 0.9 }, { x: 0, opacity: 0, duration: 0.75, ease: 'expo.out' }, '<')
+      .fromTo('.ident-w', { opacity: 0 }, { opacity: 1, duration: 0.2 }, '<')
+      .fromTo('.ident-key', { scale: 0, rotate: 0 }, { scale: 1, rotate: 180, duration: 0.55, ease: 'back.out(2.5)' }, '<+0.1')
+      .to('.ident, .leader-skip', { opacity: 0, duration: 0.28, ease: 'power2.in' }, '+=0.22');
+  }
+  // Lien direct vers une scène (#projets, #contact…) : on s'y place derrière les volets encore fermés
+  if (hashEl) intro.call(() => {
+    ScrollTrigger.refresh();
+    const y = Math.min(maxY(), docTop(hashEl) + 1);
+    if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
+    window.scrollTo(0, y);
+    ScrollTrigger.update();
   });
-  ['3', '2', '1'].forEach(n => {
-    intro.call(() => { lnum.textContent = n; })
-      .fromTo(lnum, { scale: 1.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: 'power2.out' })
-      .fromTo(ring, { '--a': '0deg' }, { '--a': '360deg', duration: 0.4, ease: 'none' }, '<');
-  });
-  // Ident : le monogramme « AG » s'étire, ses copies rouge et bleue se rejoignent, puis l'image clé tourne
-  const identShift = (i, el) => (el.classList.contains('ident-r') ? -1 : 1) * 0.13 * num(getComputedStyle(el).fontSize);
-  intro.to('.leader-core', { scale: 0.92, opacity: 0, duration: 0.2, ease: 'power2.in' })
-    .set('.ident', { opacity: 1 })
-    .fromTo('.ident-t', { '--w': 50 }, { '--w': 108, duration: 0.75, ease: 'expo.out' })
-    .fromTo('.ident-r, .ident-b', { x: identShift, opacity: 0.9 }, { x: 0, opacity: 0, duration: 0.75, ease: 'expo.out' }, '<')
-    .fromTo('.ident-w', { opacity: 0 }, { opacity: 1, duration: 0.2 }, '<')
-    .fromTo('.ident-key', { scale: 0, rotate: 0 }, { scale: 1, rotate: 180, duration: 0.55, ease: 'back.out(2.5)' }, '<+0.1')
-    .to('.ident, .leader-skip', { opacity: 0, duration: 0.28, ease: 'power2.in' }, '+=0.22')
-    .to('.leader-half.t', { yPercent: -101, duration: 0.9, ease: 'expo.inOut' }, '-=0.05')
+  intro.to('.leader-half.t', { yPercent: -101, duration: 0.9, ease: 'expo.inOut' }, short ? '+=0.15' : '-=0.05')
     .to('.leader-half.b', { yPercent: 101, duration: 0.9, ease: 'expo.inOut' }, '<')
-    .add(heroIn(), '<+0.3');
+    .addLabel('opened')
+    .add(heroIn(), 'opened-=0.6')
+    .call(finish, null, 'opened');
   const skip = () => intro.timeScale(4);
   leader.addEventListener('click', skip);
   addEventListener('keydown', skip, { once: true });
