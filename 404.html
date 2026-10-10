@@ -45,7 +45,7 @@
   html { background: var(--ink); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   body {
     position: relative; margin: 0; min-height: 100vh; min-height: 100svh;
-    display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto;
+    display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
     background-color: var(--ink); background-image: var(--grain); color: var(--paper);
     font-family: var(--f-body); font-size: 1rem; line-height: 1.55;
     -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: clip;
@@ -77,7 +77,8 @@
   @media (max-width: 720px) { .hud-title { display: none; } .hud-right { margin-left: auto; } }
   @media (max-width: 460px) { .freeze span { display: none; } .freeze { padding: 0 9px; } }
 
-  /* Moniteur : le 404 cadré comme un calque sélectionné */
+  /* Moniteur : le 404 cadré comme un calque sélectionné, puis le message ; les deux dans le repère principal */
+  .main { position: relative; z-index: 2; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
   .stage { position: relative; z-index: 2; display: grid; place-items: center; padding: clamp(18px, 5vh, 56px) var(--gut) clamp(10px, 3vh, 32px); }
   .frame { position: relative; width: min(100%, 1180px); height: clamp(150px, min(42vh, 48vw), 470px); display: grid; place-items: center; }
   .code { font-weight: inherit; }
@@ -111,7 +112,7 @@
   .preview .bbox-tag { background: var(--paper); }
   .preview .bbox-read { color: var(--paper); }
   /* Accroc de lecture : l'étiquette saute, le titre se dédouble en rouge et bleu */
-  .glitch .bbox-tag { translate: 5px 0; background: var(--blue); color: var(--paper); }
+  .glitch .bbox-tag { translate: 5px 0; background: var(--blue); color: var(--paper); transition: none; }
   .glitch .lead { text-shadow: 3px 0 var(--red), -3px 0 var(--blue); }
 
   /* Message et actions */
@@ -236,12 +237,13 @@
   </div>
 </header>
 
-<main class="stage">
+<main class="main">
+<div class="stage">
   <div class="frame">
     <h1 class="code"><span class="sr-only"><span lang="fr">Erreur 404 : cette page n’existe pas</span><span lang="en">Error 404: this page does not exist</span></span><span class="code-txt" aria-hidden="true">404</span></h1>
     <span class="bbox" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="bbox-tag mono">Média hors ligne</span><span class="bbox-read mono">Position&ensp;<b class="bx">960,0</b>&ensp;<b class="by">540,0</b></span><span class="bbox-anchor"></span></span>
   </div>
-</main>
+</div>
 
 <div class="foot">
   <div class="msg">
@@ -254,6 +256,7 @@
     <a class="btn btn-line" href="/showreel/?rapide" data-quick><span lang="fr">Version rapide</span><span lang="en">Quick version</span></a>
   </div>
 </div>
+</main>
 
 <nav class="tl" aria-label="Scènes du showreel">
   <div class="tl-bar mono"><span class="tl-cap">Choisissez une scène dans la timeline</span><span class="tl-hint"><span lang="fr">Survoler pour prévisualiser</span><span lang="en">Hover to preview</span></span></div>
