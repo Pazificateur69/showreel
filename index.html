@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGvkiPHjWdXf5Rgynt2wCWYEZEH+u21pt1KsrG8s1kc=' 'sha256-C59a2sNKHjodmK1K5d8//sNOSgekoSQ8Rd5s2krQvLU=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGvkiPHjWdXf5Rgynt2wCWYEZEH+u21pt1KsrG8s1kc=' 'sha256-TkYW7RURtuZD2QI75LEYxpCetK143LgccQA3IJP0i2I=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Alessandro Gagliardi · Ingénieur cybersécurité &amp; DevSecOps à Lyon</title>
 <meta name="description" content="Showreel interactif d’Alessandro Gagliardi, ingénieur cybersécurité et DevSecOps à Lyon : pentest, durcissement, réponse à incident, DevSecOps, projets et parcours.">
@@ -242,7 +242,8 @@
   .ml-c { max-width: 24ch; padding-bottom: .7em; color: var(--mute); font-size: clamp(.82rem, 1.05vw, 1rem); line-height: 1.4; }
   .ml-2 .ml-c { text-align: right; }
   .mani-text { justify-self: end; max-width: 58ch; font-size: clamp(1.1rem, 1.75vw, 1.55rem); line-height: 1.34; font-weight: 500; letter-spacing: -.006em; text-wrap: pretty; }
-  @media (max-width: 760px) {
+  /* Sous 1000 px la légende dépasserait la hauteur de sa ligne et toucherait la suivante : légende sous le titre */
+  @media (max-width: 1000px) {
     .ml, .ml-2 { flex-direction: column; align-items: flex-start; }
     .ml-2 { align-items: flex-end; }
     .ml-c { padding-bottom: 0; }
@@ -499,10 +500,10 @@
   }
   .contact-mail { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
   .copy-status { position: absolute; left: 0; top: 100%; margin-top: 10px; color: var(--mute); font-size: .9rem; }
-  .slate { grid-area: slate; align-self: end; justify-self: end; position: relative; width: 100%; max-width: 540px; margin: 0; --flash: 0; }
+  .slate { grid-area: slate; align-self: end; justify-self: end; position: relative; width: 100%; max-width: 640px; margin: 0; --flash: 0; }
   .slate::after { content: ""; position: absolute; inset: 0; background: var(--paper); opacity: var(--flash); pointer-events: none; }
   .slate-sticks { position: relative; display: block; width: 100%; height: clamp(52px, 7vh, 72px); }
-  .stick { position: absolute; left: 0; right: 0; height: 50%; border: 1px solid var(--paper); }
+  .stick { position: absolute; left: 0; right: 0; height: 50%; border: 1px solid var(--paper); pointer-events: none; }
   .stick-top { top: 0; transform-origin: 7px 100%; background: repeating-linear-gradient(58deg, var(--paper) 0 22px, var(--ink) 22px 44px); }
   .stick-base { bottom: 0; border-top: 0; background: repeating-linear-gradient(-58deg, var(--paper) 0 22px, var(--ink) 22px 44px); }
   .slate-sticks::after { content: ""; position: absolute; left: 0; top: 50%; width: 11px; height: 11px; margin: -6px 0 0 -5px; background: var(--red); rotate: 45deg; }
@@ -542,7 +543,9 @@
   }
   @media (max-width: 900px) {
     .contact { grid-template-columns: minmax(0, 1fr); grid-template-areas: "main" "slate" "links"; }
-    .slate { justify-self: start; }
+    .slate { justify-self: start; margin-top: clamp(24px, 8vw, 64px); }
+    .contact-title { font-size: clamp(2.8rem, 11vw, 6.4rem); }
+    .mail { font-size: clamp(1.05rem, 3.6vw, 1.7rem); }
     .ct-links a { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; }
     .ctl-k { grid-column: 1 / -1; }
   }
@@ -653,6 +656,7 @@
   }
   .motion .cr-frame::before { left: max(4px, calc(var(--gut) / 2 - 9px)); }
   .motion .cr-frame::after { right: max(4px, calc(var(--gut) / 2 - 9px)); }
+  @media (max-width: 600px) { .motion .cr-frame::before, .motion .cr-frame::after { width: 12px; background-size: 12px 23px; } .motion .cr-frame::before { left: 2px; } .motion .cr-frame::after { right: 2px; } }
   @media (max-width: 700px) {
     .nle-heads em { display: none; }
     .nle-heads { grid-template-rows: 24px repeat(3, 24px); }
@@ -1803,7 +1807,7 @@
   }
 
   /* ---------- 02 Manifeste ---------- */
-  const mani = $('#manifeste'), mText = $('.mani-text', mani), narrowMani = matchMedia('(max-width: 760px)').matches;
+  const mani = $('#manifeste'), mText = $('.mani-text', mani), narrowMani = matchMedia('(max-width: 1000px)').matches;
   const mWords = [];
   {
     const txt = mText.textContent;
@@ -2295,8 +2299,16 @@
   gsap.from(slate, { y: 50, opacity: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '.contact', start: 'top 60%', toggleActions: 'play none none reverse' } });
   gsap.ticker.add(slateTick);
   // Le clap claque en entrant à l'écran : flash, secousse, son, timecode figé
-  const stick = $('.stick-top', slate), CLAP_OPEN = -26;
-  gsap.set(stick, { rotate: CLAP_OPEN });
+  // Empilé sous les boutons (écran étroit), le clap ne s'ouvre que dans la place libre au-dessus de lui
+  const stick = $('.stick-top', slate), ctBtns = $('.contact-mail');
+  const clapOpen = () => {
+    if (!matchMedia('(max-width: 900px)').matches) return -26;
+    const gap = slate.getBoundingClientRect().top - gsap.getProperty(slate, 'y') - ctBtns.getBoundingClientRect().bottom - 12;
+    return -Math.max(5, Math.min(26, Math.asin(Math.min(1, Math.max(0, gap) / Math.max(1, stick.offsetWidth))) * 180 / Math.PI));
+  };
+  let clapped = false;
+  gsap.set(stick, { rotate: clapOpen() });
+  ScrollTrigger.addEventListener('refresh', () => { if (!clapped) gsap.set(stick, { rotate: clapOpen() }); });
   const clack = () => {
     sfx('clap');
     tcHold = performance.now() + 1100;
@@ -2305,11 +2317,11 @@
   };
   ScrollTrigger.create({
     trigger: slate, start: 'top 70%',
-    onEnter: () => gsap.timeline().to(stick, { rotate: 0, duration: 0.3, delay: 0.35, ease: 'power4.in', overwrite: true }).call(clack),
-    onLeaveBack: () => gsap.to(stick, { rotate: CLAP_OPEN, duration: 0.5, ease: 'power3.out', overwrite: true })
+    onEnter: () => { clapped = true; gsap.timeline().to(stick, { rotate: 0, duration: 0.3, delay: 0.35, ease: 'power4.in', overwrite: true }).call(clack); },
+    onLeaveBack: () => { clapped = false; gsap.to(stick, { rotate: clapOpen(), duration: 0.5, ease: 'power3.out', overwrite: true }); }
   });
   $('.slate-sticks', slate).addEventListener('click', () => gsap.timeline()
-    .to(stick, { rotate: CLAP_OPEN, duration: 0.24, ease: 'power2.out', overwrite: true })
+    .to(stick, { rotate: clapOpen, duration: 0.24, ease: 'power2.out', overwrite: true })
     .to(stick, { rotate: 0, duration: 0.26, ease: 'power4.in' })
     .call(clack));
 
@@ -2541,7 +2553,7 @@
     const cx = cs.map(c => q(c, 'x')), cy = cs.map(c => q(c, 'y')), lx = q(lab, 'x'), ly = q(lab, 'y');
     const dx = gsap.quickSetter(dot, 'x', 'px'), dy = gsap.quickSetter(dot, 'y', 'px');
     const SEL = 'a, button, .nclip, .scrub, .hn';
-    let px = -99, py = -99, tgt = null, mode = '', down = false, sy = 0, shown = false;
+    let px = -99, py = -99, tgt = null, mode = '', down = false, sy = 0, shown = false, snapped = false;
     const labelOf = t => {
       if (t.matches('[data-play]')) return CUR.play;
       if (t.matches('.hud-play')) return playing ? CUR.pause : CUR.play;
@@ -2565,7 +2577,6 @@
       mode = !t ? '' : t.matches('.hn') ? 'fine' : t.matches('.scrub') ? 'drag' : 'snap';
       const txt = t ? labelOf(t) : '';
       if (lab.textContent !== txt) lab.textContent = txt;
-      d.classList.toggle('cur-snap', !!tgt);
       d.classList.toggle('cur-lab', !!txt);
     }
     addEventListener('pointermove', e => {
@@ -2582,17 +2593,21 @@
       if (!shown) return;
       // Au défilement, l'élément sous le pointeur change sans que la souris bouge
       if (window.scrollY !== sy) { sy = window.scrollY; pick(document.elementFromPoint(px, py)); }
-      let x0, y0, x1, y1;
+      let x0, y0, x1, y1, wide = false;
       if (tgt && tgt.isConnected) {
         const r = tgt.getBoundingClientRect(), p = 6;
         x0 = r.left - p; y0 = r.top - p; x1 = r.right + p; y1 = r.bottom + p;
+        wide = r.width > 360;
       } else {
         const s = mode === 'fine' ? 5 : mode === 'drag' ? 15 : 11;
         x0 = px - s; y0 = py - s; x1 = px + s; y1 = py + s;
       }
+      // Sur une cible large (ligne de projet, lien du contact), le point reste et la légende suit le pointeur
+      const snap = !!tgt && !wide;
+      if (snap !== snapped) { snapped = snap; d.classList.toggle('cur-snap', snap); }
       if (down) { x0 += 3; y0 += 3; x1 -= 3; y1 -= 3; }
       cx[0](x0); cy[0](y0); cx[1](x1); cy[1](y0); cx[2](x0); cy[2](y1); cx[3](x1); cy[3](y1);
-      lx(x0); ly(y1);
+      if (wide) { lx(px + 12); ly(py + 4); } else { lx(x0); ly(y1); }
     });
   }
 
