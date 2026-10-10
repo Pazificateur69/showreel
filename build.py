@@ -293,6 +293,7 @@ T = [
      'font-size: clamp(2.6rem, 8.5vw, 8rem); line-height: .8; text-transform: uppercase; font-variation-settings: "wdth" var(--w, 70);', 1),
     ('<span>Rembobiner</span>', '<span>Rewind</span>', 1),
     # ---- Clap et pied de page ----
+    ('<span class="mon-res mono">1920 × 1080 · 25 i/s</span>', '<span class="mon-res mono">1920 × 1080 · 25 fps</span>', 1),
     ('aria-label="Clap de la prochaine scène"', 'aria-label="Slate for the next scene"', 1),
     ('aria-label="Faire claquer le clap"', 'aria-label="Clap the slate"', 1),
     ('<div><dt>Scène</dt><dd>10 · La suite</dd></div>', '<div><dt>Scene</dt><dd>10 · The sequel</dd></div>', 1),

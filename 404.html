@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGxaQ1t+wx2C8icBf+nYhxZLSFt/O3XcooPy1/lzpPI=' 'sha256-GpxTqroUXaa3UlhrXIiDlwAxME4SYz2UESuAte7XDe4='; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGxaQ1t+wx2C8icBf+nYhxZLSFt/O3XcooPy1/lzpPI=' 'sha256-A/fNRVcZn1mk1KH/WsP6RzqDNUPy7mbm49ul3FZ14fo='; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>404 · Média hors ligne · Alessandro Gagliardi</title>
 <meta name="description" content="Cette page n’existe pas. Le showreel d’Alessandro Gagliardi, lui, est toujours en ligne.">
@@ -153,7 +153,7 @@
   .tl-heads span:first-child { border-top: 0; }
   .tl-view { position: relative; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
   .tl-view::-webkit-scrollbar { display: none; }
-  .tl-inner { position: relative; display: grid; grid-template-rows: 22px 38px 48px; min-width: 880px; --p: .58; }
+  .tl-inner { position: relative; display: grid; grid-template-rows: 22px 38px 48px; min-width: 880px; --p: .609; }
   .tl-ruler { position: relative; background: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px calc(100% / 44)) bottom / 100% 5px no-repeat; }
   .tl-ruler span { position: absolute; top: 5px; padding-left: 5px; border-left: 1px solid var(--mute); font-family: var(--f-mono); font-size: .54rem; line-height: 1; color: var(--mute); }
   .tl-lane { position: relative; border-top: 1px solid var(--line); }
@@ -261,8 +261,8 @@
     <div class="tl-heads" aria-hidden="true"><span></span><span>V2</span><span>V1</span></div>
     <div class="tl-view">
       <div class="tl-inner">
-        <div class="tl-ruler" aria-hidden="true"><span style="left:0">00:00</span><span style="left:18.08%">00:20</span><span style="left:36.15%">00:40</span><span style="left:54.23%">01:00</span><span style="left:72.31%">01:20</span><span style="left:90.38%">01:40</span></div>
-        <div class="tl-lane v2"><span class="clip off" style="--a:.53;--b:.635" aria-hidden="true"><span lang="fr">Hors ligne</span><span lang="en">Offline</span></span></div>
+        <div class="tl-ruler" aria-hidden="true"><span style="left:0">00:00</span><span style="left:18.99%">00:20</span><span style="left:37.98%">00:40</span><span style="left:56.97%">01:00</span><span style="left:75.96%">01:20</span><span style="left:94.95%">01:40</span></div>
+        <div class="tl-lane v2"><span class="clip off" style="--a:.555;--b:.66" aria-hidden="true"><span lang="fr">Hors ligne</span><span lang="en">Offline</span></span></div>
         <div class="tl-lane v1">
           <a class="clip" href="/showreel/#ouverture" data-path="#ouverture" style="--a:0;--b:.06;--i:0;--c:var(--paper)"><b>01</b><span lang="fr">Ouverture</span><span lang="en">Opening</span></a>
           <a class="clip" href="/showreel/#manifeste" data-path="#manifeste" style="--a:.06;--b:.15;--i:1;--c:var(--red)"><b>02</b><span lang="fr">Manifeste</span><span lang="en">Manifesto</span></a>
@@ -346,7 +346,7 @@
   $('.path').textContent = path.length > 64 ? path.slice(0, 63) + '…' : path;
 
   /* ---------- Timeline : survoler une scène la prévisualise, cliquer y emmène ---------- */
-  const TOTAL = 2766, FPS = 25, P0 = 1604 / TOTAL;  // 00:01:04:04 sur 00:01:50:16, la durée du showreel
+  const TOTAL = 2633, FPS = 25, P0 = 1604 / TOTAL;  // 00:01:04:04 sur 00:01:45:08, la durée du showreel sur un écran de 1440 × 900
   const tlInner = $('.tl-inner'), tlView = $('.tl-view'), clips = $$('.tl-lane.v1 .clip'), offClip = $('.clip.off'), tcEl = $('.tc');
   const span = clips.map(c => [parseFloat(c.style.getPropertyValue('--a')), parseFloat(c.style.getPropertyValue('--b'))]);
   let pT = P0, pC = P0, onTl = false, morph = () => {}, glitchNow = () => {}, glitching = false;

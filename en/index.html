@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGvkiPHjWdXf5Rgynt2wCWYEZEH+u21pt1KsrG8s1kc=' 'sha256-/UUTaEVZ3NmRZzYjamcRxL4VS5CcxCLL7BWxqCZfnnM=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-CGvkiPHjWdXf5Rgynt2wCWYEZEH+u21pt1KsrG8s1kc=' 'sha256-J8ELoi3KIAZm1MyddCLdr8j5i2n+Bc1pk3nHt1syFIg=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Alessandro Gagliardi · Cybersecurity &amp; DevSecOps Engineer in Lyon</title>
 <meta name="description" content="Interactive showreel of Alessandro Gagliardi, cybersecurity and DevSecOps engineer in Lyon: penetration testing, hardening, incident response, DevSecOps, projects and career.">
@@ -456,7 +456,8 @@
   .band-items li::after { content: ""; width: .2em; height: .2em; margin: 0 .55em; rotate: 45deg; background: var(--tone, var(--mute)); }
   .motion .band-track { display: flex; width: max-content; will-change: transform; }
   .motion .band-items { flex-wrap: nowrap; }
-  .motion .band-items li:nth-child(even) { color: transparent; -webkit-text-stroke: 1px var(--paper); }
+  /* Mots en creux : contour peint sous un remplissage d'encre, qui cache les tracés superposés de la fonte variable */
+  .motion .band-items li:nth-child(even) { color: var(--ink); -webkit-text-stroke: 2px var(--paper); paint-order: stroke fill; }
   .motion .band-view { -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
   @media (max-width: 700px) {
     .band { grid-template-columns: 1fr; }
@@ -470,10 +471,10 @@
   .cr-open { display: grid; gap: 14px; justify-items: center; }
   .cr-pre { color: var(--mute); }
   .cr-star { font-family: var(--f-display); font-weight: 850; font-size: clamp(2.4rem, 7vw, 6.5rem); line-height: .86; text-transform: uppercase; font-variation-settings: "wdth" 80; text-wrap: balance; }
-  .cr-list { display: grid; gap: 22px; }
+  .cr-list { display: grid; gap: clamp(20px, 2.8vh, 28px); }
   .cr-list div { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; text-align: left; }
-  .cr-list dt { padding-top: .35em; text-align: right; color: var(--mute); font-family: var(--f-mono); font-size: .66rem; letter-spacing: .07em; text-transform: uppercase; font-stretch: 87.5%; }
-  .cr-list dd { font-size: 1.05rem; line-height: 1.4; }
+  .cr-list dt { padding-top: .45em; text-align: right; color: var(--mute); font-family: var(--f-mono); font-size: .66rem; letter-spacing: .07em; text-transform: uppercase; font-stretch: 87.5%; }
+  .cr-list dd { font-size: clamp(1.05rem, 1.3vw, 1.25rem); line-height: 1.4; text-wrap: pretty; }
   .cr-note { color: var(--mute); }
   @media (max-width: 600px) {
     .cr-list div { grid-template-columns: 1fr; gap: 4px; text-align: center; }
@@ -618,6 +619,18 @@
   .motion .cc-list { font-size: clamp(.88rem, 1.08vw, 1.06rem); }
   .motion .clip-card::-webkit-scrollbar { display: none; }
   .motion .nle { margin-top: 0; }
+  /* Moniteur de programme : cadres de sécurité, année en filigrane et résolution, sous la fiche (un contour révélerait les tracés superposés de la fonte variable) */
+  .mon-ov { display: none; }
+  .motion .mon-ov { display: block; position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .motion .clip-card { z-index: 1; }
+  .mon-safe { position: absolute; inset: 5%; border: 1px solid rgba(236, 237, 239, .07); }
+  .mon-safe::before { content: ""; position: absolute; inset: 5.6%; border: 1px solid rgba(236, 237, 239, .045); }
+  .mon-year {
+    position: absolute; right: 3.5%; bottom: -.07em; font-family: var(--f-display); font-weight: 900; font-size: clamp(5rem, min(34vh, 24vw), 26rem);
+    line-height: .8; letter-spacing: -.03em; font-variation-settings: "wdth" 62; color: rgba(236, 237, 239, .045);
+  }
+  .mon-res { position: absolute; left: 5%; bottom: calc(5% - 1.9em); color: var(--mute); opacity: .7; }
+  @media (max-width: 700px) { .mon-res { display: none; } }
   .motion .nle-head { display: block; }
   .motion .field { height: 100vh; height: 100svh; overflow: hidden; }
   .motion .fp { position: absolute; inset: 0; }
@@ -633,6 +646,13 @@
     -webkit-mask-image: linear-gradient(transparent, #000 16%, #000 84%, transparent); mask-image: linear-gradient(transparent, #000 16%, #000 84%, transparent);
   }
   .motion .cr-roll { position: absolute; top: 0; left: var(--gut); right: var(--gut); }
+  /* Perforations de pellicule sur les deux bords, qui défilent avec le générique */
+  .motion .cr-frame::before, .motion .cr-frame::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 18px; pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='34'%3E%3Crect x='3.5' y='9.5' width='11' height='15' rx='2.5' fill='%23ECEDEF' fill-opacity='.04' stroke='%23ECEDEF' stroke-opacity='.2'/%3E%3C/svg%3E") 0 var(--sp, 0px) / 18px 34px repeat-y;
+  }
+  .motion .cr-frame::before { left: max(4px, calc(var(--gut) / 2 - 9px)); }
+  .motion .cr-frame::after { right: max(4px, calc(var(--gut) / 2 - 9px)); }
   @media (max-width: 700px) {
     .nle-heads em { display: none; }
     .nle-heads { grid-template-rows: 24px repeat(3, 24px); }
@@ -642,6 +662,21 @@
     .motion .cc-org { font-size: .84rem; line-height: 1.4; }
     .motion .cc-list { font-size: .8rem; gap: 5px; line-height: 1.4; }
     .motion .clip-card { gap: 8px; }
+  }
+
+  /* Optique : vignettage léger et grain argentique animé par-dessus l'image ; le grain ne fait que glisser (aucune repeinture) */
+  .lens { display: none; }
+  .motion:not(.lite) .lens {
+    display: block; position: fixed; inset: 0; z-index: 58; overflow: hidden; pointer-events: none;
+    background: radial-gradient(125% 95% at 50% 50%, rgba(5, 6, 8, 0) 58%, rgba(5, 6, 8, .4) 100%);
+  }
+  .motion:not(.lite) .lens::before {
+    content: ""; position: absolute; inset: -64px; background-image: var(--grain); opacity: .5; will-change: transform;
+    animation: grain .5s steps(1) infinite;
+  }
+  @keyframes grain {
+    0% { transform: translate(0, 0); } 20% { transform: translate(-37px, 21px); } 40% { transform: translate(23px, -44px); }
+    60% { transform: translate(-12px, 33px); } 80% { transform: translate(41px, 9px); }
   }
 
   /* Retour dans la session ou lien direct : ni compte à rebours ni ident, les volets s'ouvrent tout de suite */
@@ -737,6 +772,7 @@
   <div class="ident" aria-hidden="true"><span class="ident-t ident-r">AG</span><span class="ident-t ident-b">AG</span><span class="ident-t ident-w">AG</span><i class="ident-key"></i></div>
 </div>
 
+<div class="lens" aria-hidden="true"></div>
 <div class="scrim scrim-t" aria-hidden="true"></div>
 <div class="scrim scrim-b" aria-hidden="true"></div>
 
@@ -868,6 +904,7 @@
     <div class="monitor">
       <div class="monitor-bar mono" aria-hidden="true"><span>Program monitor</span><span class="mon-name">Career</span></div>
       <div class="cards" data-lenis-prevent>
+        <div class="mon-ov" aria-hidden="true"><span class="mon-safe"></span><span class="mon-year">2023</span><span class="mon-res mono">1920 × 1080 · 25 fps</span></div>
         <article class="clip-card" data-track="V2" data-from="2026-09" data-to="2028-07" data-label="Master’s">
           <p class="cc-meta mono"><span>2026 <svg class="ico" aria-label="to"><use href="#i-arrow"/></svg> 2028</span><span>Lyon</span></p>
           <div class="cc-head"><h3 class="cc-title">Master’s in Cybersecurity, Bac+5</h3>
@@ -1741,10 +1778,11 @@
   }
   // Un seul déclencheur pour l'épinglage et la sortie : un second, calé sur l'élément épinglé, se déclenchait un écran trop tard
   gsap.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', pin: true, pinSpacing: false, scrub: true } })
-    .to('.hn-line:nth-child(1)', { xPercent: -14, ease: 'none' }, 0)
-    .to('.hn-line:nth-child(2)', { xPercent: 10, ease: 'none' }, 0)
-    .to('.hero-foot', { yPercent: 40, opacity: 0, ease: 'none' }, 0)
-    .to(hn, { scale: 0.94, opacity: 0, transformOrigin: '50% 100%', ease: 'none' }, 0);
+    .to('.hn-line:nth-child(1)', { xPercent: -14, ease: 'none', duration: 1 }, 0)
+    .to('.hn-line:nth-child(2)', { xPercent: 10, ease: 'none', duration: 1 }, 0)
+    // Le pied puis le nom s'effacent avant que le manifeste ne monte par-dessus : pas de texte superposé
+    .to('.hero-foot', { yPercent: 40, opacity: 0, ease: 'none', duration: 0.45 }, 0)
+    .to(hn, { scale: 0.94, opacity: 0, transformOrigin: '50% 100%', ease: 'power1.in', duration: 0.8 }, 0);
 
   if (fine) {
     const stretch = chars.map(c => gsap.quickTo(c, 'scaleY', { duration: 0.6, ease: 'power3.out' }));
@@ -1765,7 +1803,7 @@
   }
 
   /* ---------- 02 Manifeste ---------- */
-  const mani = $('#manifeste'), mText = $('.mani-text', mani);
+  const mani = $('#manifeste'), mText = $('.mani-text', mani), narrowMani = matchMedia('(max-width: 760px)').matches;
   const mWords = [];
   {
     const txt = mText.textContent;
@@ -1781,8 +1819,9 @@
     .fromTo('.ml-1 .ml-c', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.4')
     .fromTo('.ml-2 .ml-t', { xPercent: 105 }, { xPercent: 0, duration: 1, ease: 'power3.out' }, '-=0.3')
     .fromTo('.ml-2 .ml-c', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.4')
-    // 140 % et non 105 % : l'accent du É dépasse au-dessus de la ligne et resterait visible sous le masque
-    .fromTo('.ml-3 .ml-t', { yPercent: 140 }, { yPercent: 0, duration: 1, ease: 'power3.out' }, '-=0.3')
+    // Montée par le bas : 140 % et non 105 %, l'accent du É dépasse au-dessus de la ligne et resterait visible sous le masque.
+    // Sur écran étroit la légende passe sous le titre et le masque ne le cacherait pas : il entre par la gauche
+    .fromTo('.ml-3 .ml-t', narrowMani ? { xPercent: -105 } : { yPercent: 140 }, { xPercent: 0, yPercent: 0, duration: 1, ease: 'power3.out' }, '-=0.3')
     .fromTo('.ml-3 .ml-c', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.4')
     .fromTo(mWords, { opacity: 0.14 }, { opacity: 1, duration: 0.25, stagger: 0.045, ease: 'none' }, '-=0.2');
 
@@ -1981,7 +2020,7 @@
   ticks[0].classList.add('on');
 
   /* ---------- 04 Parcours ---------- */
-  const view = $('.nle-view', career), dateEl = $('.career-date', career), monName = $('.mon-name', career);
+  const view = $('.nle-view', career), dateEl = $('.career-date', career), monName = $('.mon-name', career), monYear = $('.mon-year', career);
   const M0 = 1.5, M1 = Math.min(SPAN - 0.5, todayM);
   const st = { m: M0 };
   let cur = null, vw = 0, iw = 0;
@@ -2001,8 +2040,12 @@
     nleInner.style.setProperty('--p', p);
     const off = Math.max(0, Math.min(iw - vw, p * iw - vw * 0.5));
     nleInner.style.transform = `translate3d(${-off}px,0,0)`;
-    const mi = Math.floor(m), txt = MONTHS[mi % 12] + ' ' + (Y0 + Math.floor(mi / 12));
+    const mi = Math.floor(m), yr = String(Y0 + Math.floor(mi / 12)), txt = MONTHS[mi % 12] + ' ' + yr;
     if (dateEl.textContent !== txt) dateEl.textContent = txt;
+    if (monYear.textContent !== yr) {
+      monYear.textContent = yr;
+      gsap.fromTo(monYear, { yPercent: 14, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.7, ease: 'expo.out', overwrite: true });
+    }
     clips.forEach(c => c.el.classList.toggle('on', m >= c.a && m < c.b));
     const act = shownAt(m);
     if (act !== cur) showCard(act);
@@ -2182,10 +2225,13 @@
     g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + len);
     o.connect(g).connect(a.destination); o.start(t); o.stop(t + len + 0.02);
   };
-  const whoosh = (a, t, f0, f1, len, vol) => {
+  const noise = a => {
     if (!noiseBuf) { noiseBuf = a.createBuffer(1, Math.floor(a.sampleRate * 0.8), a.sampleRate); const ch = noiseBuf.getChannelData(0); for (let i = 0; i < ch.length; i++) ch[i] = Math.random() * 2 - 1; }
+    return noiseBuf;
+  };
+  const whoosh = (a, t, f0, f1, len, vol) => {
     const s = a.createBufferSource(), bp = a.createBiquadFilter(), g = a.createGain();
-    s.buffer = noiseBuf; bp.type = 'bandpass'; bp.Q.value = 1.2;
+    s.buffer = noise(a); bp.type = 'bandpass'; bp.Q.value = 1.2;
     bp.frequency.setValueAtTime(f0, t); bp.frequency.exponentialRampToValueAtTime(f1, t + len);
     g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + len * 0.35); g.gain.exponentialRampToValueAtTime(0.0001, t + len);
     s.connect(bp).connect(g).connect(a.destination); s.start(t); s.stop(t + len + 0.05);
@@ -2203,6 +2249,30 @@
     else if (kind === 'tick') blip(a, t, 1250, 0.03, 0.035, 'square');
     else if (kind === 'clap') { whoosh(a, t, 2600, 5200, 0.08, 0.24); blip(a, t, 150, 0.08, 0.18, 'triangle'); blip(a, t, 60, 0.18, 0.2); }
   };
+  // Projecteur : tant que la lecture automatique tourne, le cliquetis du film à 24 images par seconde et le ronron du moteur
+  let proj = null;
+  const projector = on => {
+    if (on && sndOn && !proj) {
+      const a = audio();
+      if (!a) return;
+      const t = a.currentTime, src = a.createBufferSource(), bp = a.createBiquadFilter(), am = a.createGain(), lfo = a.createOscillator(), depth = a.createGain();
+      const hum = a.createOscillator(), hg = a.createGain(), master = a.createGain();
+      src.buffer = noise(a); src.loop = true;
+      bp.type = 'bandpass'; bp.frequency.value = 2300; bp.Q.value = 0.8;
+      lfo.type = 'square'; lfo.frequency.value = 24; depth.gain.value = 0.5; am.gain.value = 0.5;
+      lfo.connect(depth).connect(am.gain);
+      hum.type = 'sine'; hum.frequency.value = 52; hg.gain.value = 0.35;
+      master.gain.setValueAtTime(0.0001, t); master.gain.exponentialRampToValueAtTime(0.028, t + 0.5);
+      src.connect(bp).connect(am).connect(master); hum.connect(hg).connect(master); master.connect(a.destination);
+      src.start(t); lfo.start(t); hum.start(t);
+      proj = { master, nodes: [src, lfo, hum], a };
+    } else if (!(on && sndOn) && proj) {
+      const { master, nodes, a } = proj, t = a.currentTime;
+      master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(Math.max(0.0001, master.gain.value), t); master.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
+      nodes.forEach(n => n.stop(t + 0.35));
+      proj = null;
+    }
+  };
   sndBtn.addEventListener('click', () => { setSnd(!sndOn); if (sndOn) { audio(); setTimeout(() => sfx('open'), 40); } });
   if (sndOn) {
     setSnd(true);
@@ -2212,8 +2282,15 @@
 
   /* ---------- 08 Générique, contact, fin ---------- */
   const crFrame = $('.cr-frame'), crRoll = $('.cr-roll');
-  gsap.timeline({ scrollTrigger: { trigger: crFrame, start: 'top top', end: () => '+=' + (crRoll.offsetHeight + crFrame.offsetHeight) * 0.85, pin: true, scrub: true, invalidateOnRefresh: true } })
-    .fromTo(crRoll, { y: () => crFrame.offsetHeight * 0.92 }, { y: () => crFrame.offsetHeight * 0.08 - crRoll.offsetHeight, ease: 'none' });
+  // Le générique est déjà en place quand la scène arrive et finit juste avant le contact : il défile à la vitesse du
+  // défilement (aucun écran vide avant ni après), derrière un cadre fixe qui le fond en haut et en bas
+  const crY0 = () => crFrame.offsetHeight * 0.17, crY1 = () => crFrame.offsetHeight * 0.83 - crRoll.offsetHeight;
+  const crSet = () => crFrame.style.setProperty('--sp', (gsap.getProperty(crRoll, 'y') % 34).toFixed(1) + 'px');
+  gsap.timeline({
+    scrollTrigger: { trigger: crFrame, start: 'top top', end: () => '+=' + Math.max(crFrame.offsetHeight * 0.3, crY0() - crY1()), pin: true, scrub: true, invalidateOnRefresh: true },
+    onUpdate: crSet
+  }).fromTo(crRoll, { y: crY0 }, { y: crY1, ease: 'none' });
+  crSet();
   gsap.from('.ct-mail, .ct-links li', { y: 30, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.08, scrollTrigger: { trigger: '.contact', start: 'top 60%', toggleActions: 'play none none reverse' } });
   gsap.from(slate, { y: 50, opacity: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '.contact', start: 'top 60%', toggleActions: 'play none none reverse' } });
   gsap.ticker.add(slateTick);
@@ -2324,6 +2401,7 @@
     if (!v && speed !== 1) setSpeed(1);
     if (v === playing) return;
     playing = v;
+    projector(v);
     d.classList.toggle('is-playing', v);
     hudPlay.setAttribute('aria-pressed', String(v));
     hudPlayL.textContent = v ? 'Pause' : 'Play';
@@ -2437,7 +2515,8 @@
 
   /* ---------- Onglet en arrière-plan : le film est en pause ---------- */
   const T0 = document.title, PAUSE_T = 'Paused · Alessandro Gagliardi';
-  document.addEventListener('visibilitychange', () => { document.title = document.hidden ? '❚❚ ' + PAUSE_T : T0; });
+  document.addEventListener('visibilitychange', () => { document.title = document.hidden ? '❚❚ ' + PAUSE_T : T0; projector(playing && !document.hidden); });
+  sndBtn.addEventListener('click', () => projector(playing));
   $('[data-rewind]').addEventListener('click', () => {
     setPlaying(false);
     if (lenis) lenis.scrollTo(0, { duration: 2.6, easing: x => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2) });
